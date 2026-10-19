@@ -1,0 +1,32 @@
+---
+import { ADDRESS, HOURS, WA_TEXT, IG, MAPS } from "../data/site.js";
+---
+<section class="s visit-s" id="kunjungi">
+  <div class="in visit">
+    <div class="rv">
+      <div class="s-head"><span class="eyebrow">Kunjungi studio</span><h2>Sampai jumpa <em>di Negara.</em></h2></div>
+      <p class="ctas"><a class="btn dark" href={MAPS} target="_blank" rel="noopener">Buka Google Maps</a><a class="btn" style="color:var(--plum)" href={IG} target="_blank" rel="noopener">Instagram</a></p>
+    </div>
+    <div class="rv">
+      <div class="facts">
+        <div class="row"><span>Alamat</span><span>{ADDRESS}</span></div>
+        <div class="row"><span>Jam buka</span><span>{HOURS}<small id="nowOpen"></small></span></div>
+        <div class="row"><span>Booking</span><span>WhatsApp {WA_TEXT}</span></div>
+        <div class="row"><span>Google</span><span>5.0 ★ dari 3 ulasan</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .visit-s { background: var(--blush); }
+  .visit { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+  .facts { display: grid; gap: 4px; }
+  .facts .row span:last-child { text-align: right; }
+  @media (max-width: 820px) { .visit { grid-template-columns: minmax(0, 1fr); } }
+</style>
+
+<script>
+  import { isOpen } from "../lib/bali.js";
+  document.getElementById("nowOpen").textContent = isOpen() ? "Sedang buka" : "Sedang tutup, buka lagi 10.00";
+</script>
