@@ -1,0 +1,62 @@
+---
+import { COURSES, rp } from "../data/site.js";
+---
+<section class="s" id="kursus">
+  <div class="in">
+    <div class="course-top">
+      <div class="s-head rv" style="margin:0"><span class="eyebrow">Kelas kecantikan · {COURSES.length} program</span><h2>Belajar sampai <em>bisa buka sendiri.</em></h2></div>
+      <div class="toggle" role="group" aria-label="Pilihan paket"><span class="pill" id="pill"></span><button type="button" aria-pressed="true" data-tool="0">Ilmu saja</button><button type="button" aria-pressed="false" data-tool="1">Ilmu + alat</button></div>
+    </div>
+    <div class="tickets">
+      {COURSES.map(c => (
+        <article class:list={["ticket rv", c.pro ? "pro" : "framed"]}><span class="tag">{c.tag}</span><h3>{c.name}</h3><div class="price" data-p={c.price.join(",")}>{rp(c.price[0])}</div>
+          <ul>{c.items.map(t => <li>{t}</li>)}</ul>
+          <div class="meta">{c.meta.map(m => <span>{m}</span>)}</div>
+          <a class="tk-wa" data-c={c.wa} target="_blank" rel="noopener">Tanya jadwal kelas ini</a></article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .course-top { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; margin-bottom: 34px; }
+  .toggle { display: inline-flex; border: 1px solid var(--mauve); position: relative; }
+  .toggle .pill { position: absolute; top: 0; bottom: 0; background: var(--mauve); transition: left .5s var(--spring), width .5s var(--spring); }
+  .toggle button { border: 0; background: none; padding: 10px 16px; font-size: 13px; letter-spacing: .08em; position: relative; transition: color .3s; }
+  .toggle button[aria-pressed="true"] { color: #fff; }
+  .tickets { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; }
+  .ticket { background: #fff; border: 1px solid var(--line); padding: 34px 30px 30px; display: grid; gap: 16px; align-content: start; }
+  .ticket.pro { background: var(--plum); color: #f1e4e0; border-color: var(--plum); }
+  .ticket .tag { font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: var(--mauve); }
+  .ticket.pro .tag { color: var(--gold-2); }
+  .ticket h3 { font: 400 32px/1.05 var(--f-display); margin: 0; }
+  .ticket .price { font: italic 500 34px var(--f-accent); }
+  .ticket.pro .price { color: var(--gold-2); }
+  .ticket ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; font-size: 14.5px; }
+  .ticket li::before { content: "✦"; color: var(--gold); margin-right: 10px; font-size: 10px; }
+  .ticket .meta { display: flex; gap: 18px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; flex-wrap: wrap; }
+  .ticket.pro .meta { color: #cdb8b3; border-color: #3d2c2e; }
+  .tk-wa { font: 500 12px var(--f-body); letter-spacing: .2em; text-transform: uppercase; text-decoration: none; padding-bottom: 6px; justify-self: start; color: var(--mauve);
+    background: linear-gradient(currentColor, currentColor) left bottom / 30% 1px no-repeat; transition: background-size .45s var(--ease); }
+  .tk-wa:hover { background-size: 100% 1px; }
+  .ticket.pro .tk-wa { color: var(--gold-2); }
+</style>
+
+<script>
+  import { rp, waLink } from "../data/site.js";
+
+  const toggle = document.querySelector(".toggle"), pill = document.getElementById("pill");
+  const movePill = b => { pill.style.left = b.offsetLeft + "px"; pill.style.width = b.offsetWidth + "px"; };
+  const activePill = () => movePill(toggle.querySelector('[aria-pressed="true"]'));
+  const setLinks = tool => document.querySelectorAll(".tk-wa").forEach(a => a.href = waLink(`Halo kak Early Beauty, saya mau tanya jadwal kelas ${a.dataset.c} (paket ${tool ? "ilmu + alat" : "ilmu saja"}) berikutnya.`));
+
+  toggle.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    toggle.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    movePill(b);
+    document.querySelectorAll(".ticket .price").forEach(p => p.textContent = rp(+p.dataset.p.split(",")[b.dataset.tool]));
+    setLinks(+b.dataset.tool);
+  });
+  activePill(); document.fonts?.ready.then(activePill); addEventListener("resize", activePill);
+  setLinks(0);
+</script>
