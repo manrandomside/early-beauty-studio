@@ -21,15 +21,15 @@ npm run build    # static site in dist/
 
 ## Design decisions
 
-- Look: dark plum hero, porcelain sections, mauve and gold from the logo. The logo's square frame with gold corners is the recurring motif. Fonts: Marcellus (display), Cormorant Garamond italic (accent), Jost (body), Courier Prime (nail receipt).
-- Opening: the logo reveals, its frame opens into the hero frame, letters rise from a blur, and the gold italic line rewrites itself (ujung kuku / helai bulu mata / lengkung alis). Gold glitter drifts behind.
-- Signature tools: lash style slider (7 styles, drawn lashes grow denser), nail receipt calculator priced per finger, Galungan/Kuningan countdown, course price toggle (ilmu saja / ilmu + alat).
-- Showcase: pinned horizontal scroll of the studio and best work on desktop, swipe on phones. Gallery with filters and counts; tapping a photo opens its price and a "Booking gaya ini" WhatsApp link. Nail photos can be loaded straight into the receipt.
-- Motion follows one easing (`cubic-bezier(.22,1,.36,1)`), runs once, and switches off under reduced motion.
+- Look: dark plum hero, porcelain sections, mauve and gold from the logo. The logo's square frame with gold corners is the recurring motif. Fonts: Marcellus (display), Cormorant Garamond italic (accent), Jost (body), Courier Prime (nail receipt), self-hosted through the Astro fonts API.
+- Opening: the logo reveals, its frame opens into the hero frame, letters rise from a blur, and the gold italic line rewrites itself (ujung kuku / helai bulu mata / lengkung alis) while a matching photo (nails / eyelash / brow) wipes in behind it with a slow zoom. Gold glitter drifts around the frame.
+- Signature tools: lash style slider (7 styles, drawn lashes grow denser), nail receipt calculator priced per finger, Galungan/Kuningan countdown, course toggle (ilmu saja / ilmu + alat) that switches the price and what the package includes; "ilmu + alat" means the student takes a tool kit home.
+- Showcase: pinned horizontal scroll of the studio and best work (shorter hold on phones). Gallery with filters and counts; tapping a photo opens the price range from the price list and a WhatsApp booking link that names the photo. Photos carry only their service, never invented style names.
+- Motion follows one easing (`cubic-bezier(.22,1,.36,1)`), runs once, and switches off under reduced motion. Lenis smooths wheel and touch scrolling.
 - Hosting: any static host. Vercel's free plan is non-commercial only, so the live business site should go on Cloudflare Pages (free, commercial use allowed).
 
 ## Still to confirm with the owner
 
-- Style names for each eyelash photo, and the exact designs in each nail photo (the estimates are read from the photos).
-- More studio photos (front, room, chair), lash lift photos, and a short process video for the hero.
+- Which brow treatment each brow photo shows (the gallery says only "Alis" until then).
+- Bright studio photos (front, room, chair) and lash lift photos. There is no process video, so the hero uses rotating photos.
 - A transparent PNG of the logo for sharper small and watermark versions.
