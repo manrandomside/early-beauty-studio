@@ -28,42 +28,33 @@ export const REMOVES = [["Tidak", 0], ["Nail Gel", 2000], ["Nail Tip", 3000]];
 export const TIMES = ["10.00", "11.00", "12.00", "13.00", "14.00", "15.00", "16.00"];
 export const SERVICES = ["Eyelash Extension", "Nails", "Lash Lift", "Alis", "Kelas / kursus"];
 
-// showcase in walking order: [caption, photo, is studio]
-export const WORKS = [["Meja nail & rak warna", "s1", true], ["Cat eye cokelat & emas", "n1"], ["Eyelash volume", "e1"], ["Milky pink & chrome", "n4"], ["Brow lamination", "b2"], ["Kerang 3D & mutiara", "n6"], ["Eyelash wispy", "e6"], ["Bunga 3D & glitter", "n3"]];
+// showcase in walking order: [service, photo]
+export const WORKS = [["Studio", "s1"], ["Nails", "n1"], ["Eyelash", "e1"], ["Nails", "n4"], ["Alis", "b2"], ["Nails", "n6"], ["Eyelash", "e6"], ["Nails", "n3"]];
 
-// [category, name, photo, nail add-ons as finger counts (nails only)]
+// [category, photo]; photos carry no style names until the studio confirms them
 export const GALLERY = [
-  ["Eyelash", "Eyelash volume", "e1"], ["Eyelash", "Eyelash lentik rapi", "e2"], ["Eyelash", "Eyelash natural tebal", "e3"],
-  ["Eyelash", "Eyelash wispy", "e4"], ["Eyelash", "Eyelash volume halus", "e5"], ["Eyelash", "Eyelash wispy dramatis", "e6"],
-  ["Nails", "Cat eye cokelat & emas", "n1", { "Cat Eye": 10, "Chrome / Aurora": 6 }],
-  ["Nails", "Merah cat eye & kerang", "n2", { "Cat Eye": 10, "3D Shells": 2 }],
-  ["Nails", "Bunga 3D & glitter", "n3", { "Cat Eye": 6, "Glitter": 4, "3D Flowers": 2 }],
-  ["Nails", "Milky pink & chrome", "n4", { "Ombre / Blush": 10, "Chrome / Aurora": 10 }],
-  ["Nails", "Tortoise & french hitam", "n5", { "French": 6, "Desain Art": 4 }],
-  ["Nails", "Kerang 3D & mutiara", "n6", { "3D Shells": 6, "Chrome / Aurora": 4 }],
-  ["Alis", "Brow lamination", "b1"], ["Alis", "Brow lamination", "b2"], ["Alis", "Brow lamination", "b3"],
-  ["Alis", "Brow lamination", "b4"], ["Alis", "Brow lamination", "b5"], ["Alis", "Brow lamination", "b6"]
+  ...["e1", "e2", "e3", "e4", "e5", "e6"].map(p => ["Eyelash", p]),
+  ...["n1", "n2", "n3", "n4", "n5", "n6"].map(p => ["Nails", p]),
+  ...["b1", "b2", "b3", "b4", "b5", "b6"].map(p => ["Alis", p])
 ];
 export const CATS = ["Semua", "Eyelash", "Nails", "Alis"];
 
-// Two packages per course: [ilmu saja, ilmu + alat]. price and kit follow the package toggle.
-// shortcut: 'ilmu + alat' is read as a tool set to take home (the price lists only say 'included alat'); confirm with the owner.
-const NAIL_KIT = ["Alat & bahan disediakan selama kursus", "Alat & bahan disediakan, plus paket alat nail untuk dibawa pulang"];
-const LASH_KIT = ["Alat dipinjamkan selama kursus", "Alat dipinjamkan selama kursus, plus paket alat untuk dibawa pulang"];
-const NAIL_PERKS = ["Free modul", "Free display nail", "Info supplier", "Free edit foto", "Free konsultasi seumur hidup"];
+// Course price lists from the studio. price and pkg are [ilmu saja, ilmu + alat];
+// "ilmu + alat" means the student takes a tool kit home.
+const NAIL_BONUS = ["Modul", "Display nail", "Info supplier", "Edit foto", "Konsultasi seumur hidup", "Sertifikat"];
+const NAIL_PKG = ["Alat & bahan disediakan selama kelas", "Alat & bahan disediakan, plus paket alat untuk dibawa pulang"];
+const LASH_PKG = ["Alat dipinjamkan selama kursus", "Paket alat jadi milikmu, dibawa pulang"];
 export const COURSES = [
-  { tag: "Nail Art", name: "Basic", wa: "Nail Art Basic", price: [900000, 1300000], kit: NAIL_KIT, meta: ["3× pertemuan", "2–3 jam", "Sertifikat"],
-    items: ["Basic manicure, remove & nail shaping", "Desain art simpel & marble basic", "Pemasangan nail tip", "Praktek di display & ke 2 model", "Free konsultasi seumur hidup"],
-    full: { Materi: ["Pengenalan alat & bahan", "Teknik basic manicure", "Teknik remove", "Teknik desain art simpel", "Teknik desain marble basic", "Teknik pemasangan nail tip", "Teknik nail rapi & tahan lama", "Nail shaping", "Sertifikat"],
-      Bonus: NAIL_PERKS, "Teori & praktek": ["Praktek di display", "Praktek ke 2 model", "3× pertemuan", "Durasi 2–3 jam"] } },
-  { tag: "Nail Art · terlengkap", name: "Basic to Pro", wa: "Nail Art Basic to Pro", price: [1500000, 2100000], pro: true, kit: NAIL_KIT, meta: ["3× pertemuan", "3–4 jam", "Sertifikat"],
-    items: ["Semua materi Basic", "Soft gel tip & pemasangan aksesoris", "Desain lengkap, 3D & kerang", "Chrome, ombre & Japanese marble", "Free konsultasi seumur hidup"],
-    full: { Materi: ["Pengenalan alat & bahan", "Teknik basic manicure", "Teknik remove", "Teknik pemasangan nail tip", "Teknik pemasangan soft gel tip", "Teknik pemasangan aksesoris", "Teknik desain lengkap", "Teknik desain 3D", "Teknik desain chrome", "Teknik ombre", "Teknik Japanese marble", "Teknik marble basic", "Teknik desain kerang", "Teknik nail rapi & tahan lama", "Nail shaping", "Sertifikat"],
-      Bonus: NAIL_PERKS, "Teori & praktek": ["Praktek di display", "Praktek ke 2 model", "3× pertemuan", "Durasi 3–4 jam"] } },
-  { tag: "Eyelash", name: "Eyelash Extension", wa: "Eyelash Extension", price: [900000, 1600000], kit: LASH_KIT, meta: ["3× pertemuan", "3 jam/hari", "Sertifikat"],
-    items: ["Modul belajar", "Info supplier", "Free konsultasi"] },
-  { tag: "Lash Lift", name: "Lash Lift", wa: "Lash Lift", price: [500000, 900000], kit: LASH_KIT, meta: ["2× pertemuan", "2 jam/hari", "Sertifikat"],
-    items: ["Info supplier", "Free konsultasi"] }
+  { tag: "Nail Art", name: "Basic", wa: "Nail Art Basic", price: [900000, 1300000], pkg: NAIL_PKG,
+    meta: ["3× pertemuan", "2–3 jam", "Praktek di display & 2 model"], bonus: NAIL_BONUS,
+    materi: ["Pengenalan alat & bahan", "Teknik basic manicure", "Teknik remove", "Desain art simpel", "Desain marble basic", "Pemasangan nail tip", "Nail rapi & tahan lama", "Nail shaping"] },
+  { tag: "Nail Art · terlengkap", name: "Basic to Pro", wa: "Nail Art Basic to Pro", price: [1500000, 2100000], pkg: NAIL_PKG, pro: true,
+    meta: ["3× pertemuan", "3–4 jam", "Praktek di display & 2 model"], bonus: NAIL_BONUS,
+    materi: ["Pengenalan alat & bahan", "Teknik basic manicure", "Teknik remove", "Pemasangan nail tip", "Pemasangan soft gel tip", "Pemasangan aksesoris", "Desain lengkap", "Desain 3D", "Desain chrome", "Ombre", "Japanese marble", "Marble basic", "Desain kerang", "Nail rapi & tahan lama", "Nail shaping"] },
+  { tag: "Eyelash", name: "Eyelash Extension", wa: "Eyelash Extension", price: [900000, 1600000], pkg: LASH_PKG,
+    meta: ["3× pertemuan", "3 jam/hari"], bonus: ["Modul", "Info supplier", "Free konsultasi", "Sertifikat"] },
+  { tag: "Lash Lift", name: "Lash Lift", wa: "Lash Lift", price: [500000, 900000], pkg: LASH_PKG,
+    meta: ["2× pertemuan", "2 jam/hari"], bonus: ["Info supplier", "Free konsultasi", "Sertifikat"] }
 ];
 
 export const rp = n => "Rp " + n.toLocaleString("id-ID");

@@ -10,13 +10,11 @@ import { COURSES, rp } from "../data/site.js";
     <div class="tickets">
       {COURSES.map(c => (
         <article class:list={["ticket rv", c.pro ? "pro" : "framed"]}><span class="tag">{c.tag}</span><h3>{c.name}</h3>
-          <div><div class="price" data-p={c.price.join(",")}>{rp(c.price[0])}</div><p class="kit" data-kit={c.kit.join("|")} aria-live="polite">{c.kit[0]}</p></div>
-          <ul>{c.items.map(t => <li>{t}</li>)}</ul>
-          {c.full && (
-            <details class="more"><summary>Lihat materi lengkap</summary>
-              {Object.entries(c.full).map(([head, list]) => <><h4>{head}</h4><ul>{list.map(t => <li>{t}</li>)}</ul></>)}
-            </details>
-          )}
+          <div class="price" data-p={c.price.join("|")}>{rp(c.price[0])}</div>
+          <p class="pkg" data-p={c.pkg.join("|")} aria-live="polite">{c.pkg[0]}</p>
+          {c.materi && <div class="sub">Materi</div><ul>{c.materi.map(t => <li>{t}</li>)}</ul>}
+          <div class="sub">Sudah termasuk</div>
+          <div class="bonus">{c.bonus.map(b => <span>{b}</span>)}</div>
           <div class="meta">{c.meta.map(m => <span>{m}</span>)}</div>
           <a class="tk-wa" data-c={c.wa} target="_blank" rel="noopener">Tanya jadwal kelas ini</a></article>
       ))}
@@ -38,19 +36,17 @@ import { COURSES, rp } from "../data/site.js";
   .ticket h3 { font: 400 32px/1.05 var(--f-display); margin: 0; }
   .ticket .price { font: italic 500 34px var(--f-accent); }
   .ticket.pro .price { color: var(--gold-2); }
-  .ticket .kit { margin: 6px 0 0; font-size: 13.5px; line-height: 1.45; color: var(--muted); transition: opacity .3s; }
-  .ticket .kit.swap { opacity: 0; }
-  .ticket.pro .kit { color: #cdb8b3; }
-  .more summary { cursor: pointer; list-style: none; font: 500 12px var(--f-body); letter-spacing: .2em; text-transform: uppercase; color: var(--mauve); }
-  .more summary::-webkit-details-marker { display: none; }
-  .more summary::after { content: " +"; }
-  .more[open] summary::after { content: " –"; }
-  .more h4 { margin: 16px 0 8px; font: 500 11px var(--f-body); letter-spacing: .24em; text-transform: uppercase; color: var(--muted); }
-  .more ul { font-size: 14px; }
-  .ticket.pro .more summary { color: var(--gold-2); }
-  .ticket.pro .more h4 { color: #cdb8b3; }
-  .ticket ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; font-size: 14.5px; }
+  /* what the chosen package includes; changes with the toggle */
+  .ticket .pkg { margin: 0; padding: 10px 12px; border-left: 2px solid var(--gold); background: var(--blush); font-size: 14px; line-height: 1.45; transition: opacity .25s; }
+  .ticket .pkg.swap { opacity: 0; }
+  .ticket.pro .pkg { background: rgba(255,255,255,.06); }
+  .ticket .sub { font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--muted); margin-bottom: -8px; }
+  .ticket.pro .sub { color: #a99592; }
+  .ticket ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; font-size: 14px; }
   .ticket li::before { content: "✦"; color: var(--gold); margin-right: 10px; font-size: 10px; }
+  .bonus { display: flex; flex-wrap: wrap; gap: 6px; }
+  .bonus span { font-size: 12.5px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 99px; }
+  .ticket.pro .bonus span { border-color: #4a3638; }
   .ticket .meta { display: flex; gap: 18px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; flex-wrap: wrap; }
   .ticket.pro .meta { color: #cdb8b3; border-color: #3d2c2e; }
   .tk-wa { font: 500 12px var(--f-body); letter-spacing: .2em; text-transform: uppercase; text-decoration: none; padding-bottom: 6px; justify-self: start; color: var(--mauve);
@@ -72,13 +68,12 @@ import { COURSES, rp } from "../data/site.js";
     toggle.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
     movePill(b);
     const tool = +b.dataset.tool;
-    document.querySelectorAll(".ticket .price").forEach(p => p.textContent = rp(+p.dataset.p.split(",")[tool]));
-    // the package line fades out, changes, and fades back in
-    document.querySelectorAll(".ticket .kit").forEach(k => {
-      k.classList.add("swap");
-      setTimeout(() => { k.textContent = k.dataset.kit.split("|")[tool]; k.classList.remove("swap"); }, 200);
+    document.querySelectorAll(".ticket .price").forEach(p => p.textContent = rp(+p.dataset.p.split("|")[tool]));
+    document.querySelectorAll(".ticket .pkg").forEach(p => {
+      p.classList.add("swap");
+      setTimeout(() => { p.textContent = p.dataset.p.split("|")[tool]; p.classList.remove("swap"); }, 250);
     });
-    setLinks(+b.dataset.tool);
+    setLinks(tool);
   });
   activePill(); document.fonts?.ready.then(activePill); addEventListener("resize", activePill);
   setLinks(0);
