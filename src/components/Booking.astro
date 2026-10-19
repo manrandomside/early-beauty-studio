@@ -46,10 +46,14 @@ import { SERVICES, TIMES } from "../data/site.js";
 
   const $ = id => document.getElementById(id);
   const sheet = $("sheet"), bg = $("sheetBg"), chosen = new Set(["Eyelash Extension"]);
-  $("date2").value = new Date(holyDays().today + DAY).toISOString().slice(0, 10);
+  // bookings start today (Bali time); the picker greys out past days and defaults to tomorrow
+  const isoDay = t => new Date(t).toISOString().slice(0, 10), { today } = holyDays();
+  $("date2").min = isoDay(today);
+  $("date2").value = isoDay(today + DAY);
 
   function render() {
     $("svc").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(chosen.has(b.dataset.s))));
+    if ($("date2").value && $("date2").value < $("date2").min) $("date2").value = $("date2").min;
     const d = $("date2").value ? longDate(Date.parse($("date2").value + "T00:00:00Z")) : "-";
     $("sheetSend").href = waLink(`Halo kak Early Beauty, saya mau booking:\n- Layanan: ${[...chosen].join(", ") || "-"}\n- Tanggal: ${d}\n- Jam: ${$("time2").value} WITA\nApakah slotnya masih ada?`);
   }

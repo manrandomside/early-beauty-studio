@@ -71,7 +71,10 @@ const k = n => n / 1000 + "rb";
   const $ = id => document.getElementById(id);
   // starts as an example set so the receipt is never empty
   const st = { base: 2, fingers: 10, adds: ADDS.map(a => a[0] === "Cat Eye" ? 10 : a[0] === "3D Flowers" ? 2 : 0), remove: 0 };
-  $("date").value = new Date(holyDays().today + DAY).toISOString().slice(0, 10);
+  // bookings start today (Bali time); the picker greys out past days and defaults to tomorrow
+  const isoDay = t => new Date(t).toISOString().slice(0, 10), { today } = holyDays();
+  $("date").min = isoDay(today);
+  $("date").value = isoDay(today + DAY);
 
   let shown = 0;
   function countTo(target) {
@@ -92,6 +95,7 @@ const k = n => n / 1000 + "rb";
     $("removes").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.i == st.remove)));
     st.adds.forEach((c, i) => { $("ao" + i).textContent = c; $("add" + i).classList.toggle("on", c > 0); });
     countTo(total);
+    if ($("date").value && $("date").value < $("date").min) $("date").value = $("date").min;
     const d = $("date").value ? longDate(Date.parse($("date").value + "T00:00:00Z")) : "-";
     $("send").href = waLink(`Halo kak Early Beauty, saya mau booking nails:\n${lines.map(l => "- " + l[0] + " = " + l[1].toLocaleString("id-ID")).join("\n")}\nEstimasi total: ${rp(total)}\nTanggal: ${d}\nJam: ${$("time").value} WITA\nApakah slotnya masih ada?`);
   }
