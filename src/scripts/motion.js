@@ -27,11 +27,12 @@ export function initReveal() {
   document.querySelectorAll(".mlw").forEach(h => io.observe(h));
 }
 
-// Eased wheel scrolling on desktop (phones keep their native touch scrolling), with smooth anchor links.
+// Eased scrolling for mouse wheel and touch, with smooth anchor links.
+// syncTouch can feel off on iOS older than 16; those phones are rare enough to accept.
 let lenis = null;
 export function initSmoothScroll() {
   if (REDUCE) return;
-  lenis = new Lenis({ autoRaf: true, anchors: true });
+  lenis = new Lenis({ autoRaf: true, anchors: true, syncTouch: true });
 }
 export const scrollToEl = el => lenis ? lenis.scrollTo(el) : el.scrollIntoView({ behavior: REDUCE ? "auto" : "smooth" });
 
