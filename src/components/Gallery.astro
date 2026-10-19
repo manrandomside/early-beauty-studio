@@ -1,0 +1,118 @@
+---
+import { Image, getImage } from "astro:assets";
+import { GALLERY, CATS } from "../data/site.js";
+import { photo } from "../data/photos.js";
+
+// large version for the detail view, read by the script from data-full
+const full = Object.fromEntries(await Promise.all(GALLERY.map(async g => [g[2], (await getImage({ src: photo(g[2]), width: 1000, format: "webp" })).src])));
+---
+<section class="s" id="galeri">
+  <div class="in">
+    <div class="s-head rv"><span class="eyebrow">Galeri · ketuk foto untuk detail</span><h2>Pilih gaya, <em>lihat harganya.</em></h2><p class="lead">Semua hasil kerja Early Beauty per layanan. Ketuk satu foto untuk melihat harga dan langsung booking gaya yang sama.</p></div>
+    <div class="filters" id="filters" role="group" aria-label="Filter galeri">
+      {CATS.map(c => <button type="button" data-c={c} aria-pressed={String(c === "Semua")}>{c}<small>{c === "Semua" ? GALLERY.length : GALLERY.filter(g => g[0] === c).length}</small></button>)}
+    </div>
+    <div class="grid-g" id="gallery">
+      {GALLERY.map((g, i) => (
+        <button type="button" class="tile" data-i={i} data-full={full[g[2]]} aria-label={`${g[1]}, lihat detail`}><Image src={photo(g[2])} widths={[240, 480]} sizes="(max-width: 680px) 46vw, 260px" alt={`${g[1]} (${g[0]}) di Early Beauty Studio`} /><span><small>{g[0]}</small>{g[1]}</span></button>
+      ))}
+    </div>
+  </div>
+</section>
+
+<dialog class="lb" id="lb" aria-labelledby="lbName">
+  <button type="button" class="lb-close" id="lbClose" aria-label="Tutup detail">×</button>
+  <div class="lb-in">
+    <div class="lb-img"><img id="lbImg" src={full[GALLERY[0][2]]} alt="" /></div>
+    <div class="lb-info">
+      <span class="eyebrow" id="lbCat"></span>
+      <h3 id="lbName"></h3>
+      <div class="lb-price" id="lbPrice"></div>
+      <p class="lb-note" id="lbNote"></p>
+      <div class="lb-acts"><a class="btn dark" id="lbBook" target="_blank" rel="noopener">Booking gaya ini</a><button type="button" class="btn line" id="lbCalc" hidden>Atur di nota nails</button></div>
+      <div class="lb-nav"><button type="button" id="lbPrev" aria-label="Foto sebelumnya">←</button><span id="lbCount"></span><button type="button" id="lbNext" aria-label="Foto berikutnya">→</button></div>
+    </div>
+  </div>
+</dialog>
+
+<style is:global>
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; padding-block: 10px; background: var(--porcelain); }
+  .filters button { border: 1px solid var(--line); background: #fff; padding: 8px 15px; border-radius: 99px; font-size: 14px; transition: background .25s, color .25s, border-color .25s; }
+  .filters button small { opacity: .6; margin-left: 6px; font-variant-numeric: tabular-nums; }
+  .filters button[aria-pressed="true"] { background: var(--plum); border-color: var(--plum); color: #f4e9e6; }
+  .grid-g { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(46%, 210px), 1fr)); gap: 10px; }
+  .tile { position: relative; aspect-ratio: 1; max-width: 100%; border: 0; padding: 0; overflow: hidden; background: var(--blush); text-align: left; }
+  .tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+  .tile:hover img, .tile:focus-visible img { transform: scale(1.06); }
+  .tile::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(29,20,22,.55)); }
+  .tile span { position: absolute; z-index: 1; left: 12px; right: 12px; bottom: 10px; color: #fff; font-size: 13px; line-height: 1.3; text-shadow: 0 1px 10px rgba(0,0,0,.35); }
+  .tile span small { display: block; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; opacity: .85; }
+  .tile.enter { animation: tileIn .6s var(--ease) both; animation-delay: var(--d, 0s); }
+  @keyframes tileIn { from { opacity: 0; transform: translateY(16px) scale(.97); } }
+
+  dialog.lb { border: 0; padding: 0; max-width: min(920px, calc(100vw - 24px)); width: 100%; background: var(--porcelain); color: var(--ink); max-height: calc(100svh - 24px); overflow: auto; }
+  dialog.lb::backdrop { background: rgba(29,20,22,.7); backdrop-filter: blur(4px); }
+  dialog.lb[open] { animation: lbIn .45s var(--ease); }
+  @keyframes lbIn { from { opacity: 0; transform: translateY(24px) scale(.97); } }
+  .lb-in { display: grid; grid-template-columns: 1.1fr 1fr; }
+  .lb-img { aspect-ratio: 1; max-width: 100%; position: relative; }
+  .lb-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .lb-info { padding: 34px 30px; display: grid; gap: 14px; align-content: start; min-width: 0; }
+  .lb-info .eyebrow { color: var(--mauve); }
+  .lb-info h3 { margin: 0; font: 400 clamp(30px, 4vw, 40px)/1.05 var(--f-display); }
+  .lb-price { font: italic 500 32px var(--f-accent); color: var(--mauve); }
+  .lb-note { color: var(--muted); margin: 0; font-size: 15px; }
+  .lb-acts { display: grid; gap: 10px; margin-top: 6px; }
+  .lb-acts .btn.line { color: var(--plum); }
+  .lb-nav { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 14px; margin-top: 8px; font-size: 13px; color: var(--muted); }
+  .lb-nav button { border: 1px solid var(--line); background: #fff; width: 42px; height: 42px; font-size: 18px; }
+  .lb-close { position: absolute; top: 10px; right: 10px; z-index: 2; border: 0; width: 40px; height: 40px; border-radius: 50%; background: rgba(251,247,245,.9); font-size: 22px; }
+  @media (max-width: 680px) { .lb-in { grid-template-columns: minmax(0, 1fr); } .lb-info { padding: 24px 20px; } }
+</style>
+
+<script>
+  import { GALLERY, LASH, ADDS, rp, waLink } from "../data/site.js";
+  import { nailEstimate } from "../lib/bali.js";
+  import { REDUCE } from "../scripts/motion.js";
+
+  const $ = id => document.getElementById(id);
+  const tiles = [...$("gallery").children], lb = $("lb");
+  let shown = GALLERY.map((g, i) => i), cur = 0;
+
+  function filter(cat) {
+    $("filters").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.c === cat)));
+    shown = GALLERY.map((g, i) => i).filter(i => cat === "Semua" || GALLERY[i][0] === cat);
+    let n = 0;
+    tiles.forEach((t, i) => {
+      const on = shown.includes(i);
+      t.hidden = !on; t.classList.remove("enter");
+      if (on && !REDUCE) { void t.offsetWidth; t.style.setProperty("--d", n++ * .05 + "s"); t.classList.add("enter"); }
+    });
+  }
+  $("filters").addEventListener("click", e => { const b = e.target.closest("button"); if (b) filter(b.dataset.c); });
+
+  // price and note per category; nails are estimated from the add-ons seen in the photo
+  const DETAIL = {
+    Eyelash: () => ["mulai Rp 60.000", `${LASH.length} gaya dari Natural Classic (60K) sampai Volume Anime Lash (90K). Gaya yang pas ditentukan saat konsultasi di studio.`],
+    Nails: g => ["± " + rp(nailEstimate(g[3], ADDS)), `Estimasi Nail Gel 10 jari + ${Object.entries(g[3]).map(([n, c]) => `${n} ${c} jari`).join(", ")}. Harga akhir dikonfirmasi studio.`],
+    Alis: () => [rp(70000), "Alis dirapikan dan diangkat supaya terlihat tebal, rapi dan fluffy. Foto atas sebelum, bawah sesudah."]
+  };
+
+  function show(pos) {
+    cur = (pos + shown.length) % shown.length;
+    const g = GALLERY[shown[cur]], [price, note] = DETAIL[g[0]](g);
+    $("lbImg").src = tiles[shown[cur]].dataset.full; $("lbImg").alt = `${g[1]} (${g[0]})`;
+    $("lbCat").textContent = g[0]; $("lbName").textContent = g[1]; $("lbPrice").textContent = price; $("lbNote").textContent = note;
+    $("lbCount").textContent = `${cur + 1} / ${shown.length}`;
+    $("lbBook").href = waLink(`Halo kak Early Beauty, saya mau booking ${g[0] === "Nails" ? "nails dengan desain " : ""}${g[1]} seperti di foto galeri. Apakah ada slot kosong?`);
+    $("lbCalc").hidden = g[0] !== "Nails";
+  }
+
+  $("gallery").addEventListener("click", e => { const t = e.target.closest(".tile"); if (!t) return; show(shown.indexOf(+t.dataset.i)); lb.showModal(); });
+  $("lbPrev").onclick = () => show(cur - 1);
+  $("lbNext").onclick = () => show(cur + 1);
+  $("lbClose").onclick = () => lb.close();
+  lb.addEventListener("click", e => { if (e.target === lb) lb.close(); });
+  lb.addEventListener("keydown", e => { if (e.key === "ArrowLeft") show(cur - 1); if (e.key === "ArrowRight") show(cur + 1); });
+  $("lbCalc").onclick = () => { lb.close(); dispatchEvent(new CustomEvent("nails:load", { detail: GALLERY[shown[cur]][3] })); };
+</script>
