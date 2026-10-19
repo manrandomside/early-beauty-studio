@@ -18,7 +18,7 @@ import { photo } from "../data/photos.js";
 </section>
 
 <style is:global>
-  /* dark showcase of the studio: pinned horizontal scroll on desktop, swipe carousel on phones */
+  /* dark showcase of the studio: pinned horizontal scroll on every screen */
   .works { background: var(--plum); color: #f1e4e0; padding-block: 84px; }
   .works .s-head .eyebrow { color: var(--gold-2); }
   .works h2 em { color: var(--gold-2); }
@@ -29,13 +29,20 @@ import { photo } from "../data/photos.js";
   .work figcaption { font-size: 12px; letter-spacing: .28em; text-transform: uppercase; color: var(--gold-2); }
   .works-bar { height: 1px; background: rgba(255,255,255,.12); margin-top: 30px; position: relative; }
   .works-bar i { position: absolute; left: 0; top: -1px; height: 3px; width: 0; background: var(--gold); }
-  @media (min-width: 821px) and (prefers-reduced-motion: no-preference) {
+  /* the section holds the screen while the photos slide sideways */
+  @media (prefers-reduced-motion: no-preference) {
     .works { padding-block: 0; }
     .works-pin { height: 280vh; }
     .works-sticky { position: sticky; top: 0; height: 100svh; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
     .work { width: min(330px, calc((100svh - 300px) * .8)); }
   }
-  @media (max-width: 820px), (prefers-reduced-motion: reduce) {
+  /* phones: a shorter hold so a quick thumb scroll never feels stuck */
+  @media (max-width: 820px) and (prefers-reduced-motion: no-preference) {
+    .works-pin { height: 240vh; }
+    .work { width: min(62vw, calc((100svh - 260px) * .8)); }
+  }
+  /* reduced motion: a plain swipe carousel */
+  @media (prefers-reduced-motion: reduce) {
     .works-track { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 6px; }
     .works-track::-webkit-scrollbar { display: none; }
     .work { scroll-snap-align: center; }
@@ -44,7 +51,7 @@ import { photo } from "../data/photos.js";
 
 <script>
   const track = document.getElementById("worksTrack"), pin = document.getElementById("worksPin"), bar = document.getElementById("worksBar");
-  const pinned = matchMedia("(min-width: 821px) and (prefers-reduced-motion: no-preference)");
+  const pinned = matchMedia("(prefers-reduced-motion: no-preference)");
   function update() {
     if (!pinned.matches) {
       track.style.transform = ""; track.style.removeProperty("--z");
