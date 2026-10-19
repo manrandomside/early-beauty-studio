@@ -1,0 +1,71 @@
+---
+import { LASH, rp } from "../data/site.js";
+---
+<section class="s" id="lash">
+  <div class="in">
+    <div class="s-head rv"><span class="eyebrow">Eyelash extension · {LASH.length} gaya</span><h2>Dari natural <em>sampai dramatis.</em></h2><p class="lead">Geser untuk melihat bedanya. Semakin ke kanan, bulu mata makin tebal dan panjang.</p></div>
+    <div class="lash">
+      <div class="lash-stage framed rv"><svg id="eye" viewBox="0 0 400 220" role="img" aria-label="Ilustrasi garis bulu mata"></svg></div>
+      <div class="lash-info rv">
+        <div><div class="lash-name" id="lashName">{LASH[0][0]}</div><div class="lash-price" id="lashPrice">{rp(LASH[0][1])}</div></div>
+        <p class="lash-desc" id="lashDesc">{LASH[0][2]}</p>
+        <div class="scale"><input type="range" id="lashRange" min="0" max={LASH.length - 1} value="0" aria-label="Pilih gaya bulu mata" /><div class="ends"><span>Natural</span><span>Dramatis</span></div></div>
+        <div class="ticks" id="lashTicks">{LASH.map((l, i) => <button type="button" data-i={i} aria-pressed={String(i === 0)}>{l[0]}</button>)}</div>
+        <div class="note">Remove dari Early Beauty 30K · dari salon lain 35K · Retouch mulai 40K (hanya 1×)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .lash { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
+  .lash-stage { background: var(--blush); aspect-ratio: 4/3; display: grid; place-items: center; overflow: hidden; }
+  .lash-stage svg { width: 82%; height: auto; overflow: visible; }
+  .lash-info { display: grid; gap: 18px; min-width: 0; }
+  .lash-name { font: 400 clamp(30px, 5vw, 44px)/1.05 var(--f-display); }
+  .lash-price { font: italic 500 30px var(--f-accent); color: var(--mauve); }
+  .lash-desc { color: var(--muted); margin: 0; min-height: 3.2em; }
+  .scale { display: grid; gap: 10px; }
+  .scale input { width: 100%; accent-color: var(--mauve); }
+  .scale .ends { display: flex; justify-content: space-between; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .ticks { display: flex; gap: 6px; flex-wrap: wrap; }
+  .ticks button { border: 1px solid var(--line); background: #fff; padding: 6px 12px; font-size: 13px; border-radius: 99px; transition: all .2s; }
+  .ticks button[aria-pressed="true"] { background: var(--mauve); border-color: var(--mauve); color: #fff; }
+  .note { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; }
+  @media (max-width: 820px) { .lash { grid-template-columns: minmax(0, 1fr); } }
+</style>
+
+<script>
+  import { LASH, rp } from "../data/site.js";
+
+  const $ = id => document.getElementById(id);
+  const eye = $("eye"), ticks = $("lashTicks");
+
+  // lashes along the upper lid; more, longer and thicker as the style gets more dramatic
+  function drawEye(lv) {
+    const anime = lv >= 5, n = 26 + lv * 9, len = 26 + lv * 6;
+    let s = `<path d="M40 150 Q200 40 360 150" fill="none" stroke="#8a5d56" stroke-width="3" stroke-linecap="round"/>
+             <path d="M70 152 Q200 210 330 152" fill="none" stroke="#c99a91" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+             <circle cx="200" cy="140" r="30" fill="#3a2624" opacity=".9"/><circle cx="210" cy="130" r="6" fill="#fbf7f5"/>`;
+    for (let i = 0; i < n; i++) {
+      const t = 0.06 + 0.88 * i / (n - 1), x = 40 + 320 * t, y = 150 - 220 * t * (1 - t);
+      const ang = (-150 + 120 * t) * Math.PI / 180;
+      let L = len * (0.75 + 0.5 * Math.sin(Math.PI * t)) * (0.85 + 0.3 * ((i * 37) % 7) / 7);
+      if (anime && i % 5 === 0) L *= 1.55;
+      const x2 = x + Math.cos(ang) * L, y2 = y + Math.sin(ang) * L;
+      s += `<path d="M${x.toFixed(1)} ${y.toFixed(1)} Q${((x + x2) / 2 + 6).toFixed(1)} ${((y + y2) / 2 - 4).toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="#2a1d1f" stroke-width="${(1.1 + lv * .12).toFixed(2)}" fill="none" stroke-linecap="round"/>`;
+    }
+    eye.innerHTML = s;
+  }
+
+  function setLash(i) {
+    const [name, price, desc] = LASH[i];
+    $("lashName").textContent = name; $("lashPrice").textContent = rp(price); $("lashDesc").textContent = desc;
+    $("lashRange").value = i;
+    ticks.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.i == i)));
+    drawEye(i);
+  }
+  $("lashRange").addEventListener("input", e => setLash(+e.target.value));
+  ticks.addEventListener("click", e => e.target.dataset.i && setLash(+e.target.dataset.i));
+  setLash(0);
+</script>
