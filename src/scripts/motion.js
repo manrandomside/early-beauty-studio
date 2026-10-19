@@ -1,3 +1,6 @@
+import Lenis from "lenis";
+import "lenis/dist/lenis.css";
+
 export const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // an element counts as seen once its top passes 82% of the screen height, so on phones
@@ -23,6 +26,14 @@ export function initReveal() {
   });
   document.querySelectorAll(".mlw").forEach(h => io.observe(h));
 }
+
+// Eased wheel scrolling on desktop (phones keep their native touch scrolling), with smooth anchor links.
+let lenis = null;
+export function initSmoothScroll() {
+  if (REDUCE) return;
+  lenis = new Lenis({ autoRaf: true, anchors: true });
+}
+export const scrollToEl = el => lenis ? lenis.scrollTo(el) : el.scrollIntoView({ behavior: REDUCE ? "auto" : "smooth" });
 
 // Runs fn once when el first scrolls into view.
 export function onceVisible(el, fn) {

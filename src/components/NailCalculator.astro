@@ -68,6 +68,7 @@ const k = n => n / 1000 + "rb";
 <script>
   import { BASES, ADDS, REMOVES, rp, waLink, longDate } from "../data/site.js";
   import { holyDays, DAY } from "../lib/bali.js";
+  import { scrollToEl } from "../scripts/motion.js";
 
   const $ = id => document.getElementById(id);
   // starts as an example set so the receipt is never empty
@@ -108,7 +109,7 @@ const k = n => n / 1000 + "rb";
   addEventListener("nails:load", e => {
     st.base = 0; st.fingers = 10; st.remove = 0; st.adds = ADDS.map(a => e.detail[a[0]] || 0);
     render();
-    $("nails").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    scrollToEl($("nails"));
   });
 
   render();

@@ -20,7 +20,7 @@ const full = Object.fromEntries(await Promise.all(GALLERY.map(async g => [g[2], 
   </div>
 </section>
 
-<dialog class="lb" id="lb" aria-labelledby="lbName">
+<dialog class="lb" id="lb" data-lenis-prevent aria-labelledby="lbName">
   <button type="button" class="lb-close" id="lbClose" aria-label="Tutup detail">×</button>
   <div class="lb-in">
     <div class="lb-img"><img id="lbImg" src={full[GALLERY[0][2]]} alt="" /></div>
