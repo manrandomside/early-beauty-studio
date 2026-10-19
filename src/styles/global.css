@@ -2,10 +2,10 @@
 :root {
   --plum: #1d1416; --plum-2: #2a1d1f; --mauve: #8a5d56; --rose: #c99a91; --gold: #c9a45f; --gold-2: #e3c88f;
   --porcelain: #fbf7f5; --blush: #f2e4df; --ink: #3a2624; --muted: #7c6560; --line: #e4d6d1;
-  --f-display: "Marcellus", "Times New Roman", serif;
-  --f-accent: "Cormorant Garamond", Georgia, serif;
-  --f-body: "Jost", system-ui, sans-serif;
-  --f-nota: "Courier Prime", ui-monospace, monospace;
+  --f-display: var(--font-marcellus);
+  --f-accent: var(--font-cormorant);
+  --f-body: var(--font-jost);
+  --f-nota: var(--font-courier);
   --ease: cubic-bezier(.22,1,.36,1); --spring: cubic-bezier(.34,1.56,.64,1);
   color-scheme: light;
 }

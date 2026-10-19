@@ -1,4 +1,5 @@
 ---
+import { Font } from "astro:assets";
 import "../styles/global.css";
 import { ADDRESS, WA, IG } from "../data/site.js";
 
@@ -40,9 +41,11 @@ const business = {
     <meta name="theme-color" content="#1d1416" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&family=Jost:wght@300;400;500&family=Courier+Prime:wght@400;700&display=swap" />
+    <!-- the three faces seen in the first screen are preloaded; the receipt font loads when needed -->
+    <Font cssVariable="--font-marcellus" preload />
+    <Font cssVariable="--font-cormorant" preload={[{ weight: 400, style: "italic" }]} />
+    <Font cssVariable="--font-jost" preload={[{ weight: 500 }]} />
+    <Font cssVariable="--font-courier" />
     <script type="application/ld+json" set:html={JSON.stringify(business)} />
     <!-- set before first paint so reveal-on-scroll never flashes visible content -->
     <script is:inline>document.documentElement.classList.add("js")</script>
