@@ -1,0 +1,45 @@
+---
+import "../styles/global.css";
+import { ADDRESS, WA, IG } from "../data/site.js";
+
+const title = "Early Beauty Studio · Eyelash, Nails & Alis di Negara, Jembrana";
+const description = "Studio eyelash extension, nail art, lash lift dan alis di Banyubiru, Negara, Jembrana. Cek harga, hitung harga nails, lalu booking lewat WhatsApp. Buka setiap hari 10.00–17.00 WITA.";
+
+// tells Google this is a local beauty salon, with hours and location
+const business = {
+  "@context": "https://schema.org",
+  "@type": "BeautySalon",
+  name: "Early Beauty Studio",
+  telephone: "+" + WA,
+  address: { "@type": "PostalAddress", streetAddress: ADDRESS, addressLocality: "Negara", addressRegion: "Bali", postalCode: "82212", addressCountry: "ID" },
+  geo: { "@type": "GeoCoordinates", latitude: -8.3509707, longitude: 114.5964022 },
+  openingHours: "Mo-Su 10:00-17:00",
+  sameAs: [IG]
+};
+---
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#1d1416" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&family=Jost:wght@300;400;500&family=Courier+Prime:wght@400;700&display=swap" />
+    <script type="application/ld+json" set:html={JSON.stringify(business)} />
+    <!-- set before first paint so reveal-on-scroll never flashes visible content -->
+    <script is:inline>document.documentElement.classList.add("js")</script>
+  </head>
+  <body>
+    <slot />
+    <script>
+      import { initReveal } from "../scripts/motion.js";
+      initReveal();
+    </script>
+  </body>
+</html>
