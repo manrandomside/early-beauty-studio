@@ -8,8 +8,8 @@ import { photo } from "../data/photos.js";
     <div class="works-sticky">
       <div class="in"><div class="s-head rv" style="margin-bottom:30px"><span class="eyebrow">Early Beauty Studio · Banyubiru, Negara</span><h2>Masuk dulu, <em>lihat-lihat sebentar.</em></h2></div></div>
       <div class="works-track" id="worksTrack">
-        {WORKS.map(([cap, key, studio]) => (
-          <figure class="work"><div class="img framed"><Image src={photo(key)} widths={[360, 660]} sizes="330px" alt={cap} />{studio && <span class="tag-studio">Studio</span>}</div><figcaption><b>{cap}</b></figcaption></figure>
+        {WORKS.map(([label, key]) => (
+          <figure class="work"><div class="img framed"><Image src={photo(key)} widths={[360, 660]} sizes="330px" alt={`${label} di Early Beauty Studio`} /></div><figcaption>{label}</figcaption></figure>
         ))}
       </div>
       <div class="in"><div class="works-bar"><i id="worksBar"></i></div></div>
@@ -26,8 +26,7 @@ import { photo } from "../data/photos.js";
   .work { flex: 0 0 auto; width: min(72vw, 330px); margin: 0; display: grid; gap: 12px; }
   .work .img { aspect-ratio: 4/5; max-width: 100%; overflow: hidden; position: relative; }
   .work .img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(var(--z, 1)); transition: transform .1s linear; }
-  .work .img .tag-studio { position: absolute; top: 14px; left: 16px; font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: rgba(255,255,255,.85); }
-  .work figcaption b { font: 400 21px var(--f-display); }
+  .work figcaption { font-size: 12px; letter-spacing: .28em; text-transform: uppercase; color: var(--gold-2); }
   .works-bar { height: 1px; background: rgba(255,255,255,.12); margin-top: 30px; position: relative; }
   .works-bar i { position: absolute; left: 0; top: -1px; height: 3px; width: 0; background: var(--gold); }
   @media (min-width: 821px) and (prefers-reduced-motion: no-preference) {

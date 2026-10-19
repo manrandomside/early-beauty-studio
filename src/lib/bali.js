@@ -17,5 +17,3 @@ export function holyDays(now = Date.now()) {
   return { today, gal, prev: gal - 210 * DAY, kun: gal + 10 * DAY, bookBy: gal - 14 * DAY };
 }
 
-// Nails estimate shown in the gallery: Nail Gel on 10 fingers plus the add-ons seen in the photo.
-export const nailEstimate = (adds, ADDS) => 4000 * 10 + ADDS.reduce((s, [name, price]) => s + price * (adds[name] || 0), 0);

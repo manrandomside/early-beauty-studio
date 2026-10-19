@@ -68,8 +68,6 @@ const k = n => n / 1000 + "rb";
 <script>
   import { BASES, ADDS, REMOVES, rp, waLink, longDate } from "../data/site.js";
   import { holyDays, DAY } from "../lib/bali.js";
-  import { scrollToEl } from "../scripts/motion.js";
-
   const $ = id => document.getElementById(id);
   // starts as an example set so the receipt is never empty
   const st = { base: 2, fingers: 10, adds: ADDS.map(a => a[0] === "Cat Eye" ? 10 : a[0] === "3D Flowers" ? 2 : 0), remove: 0 };
@@ -104,13 +102,6 @@ const k = n => n / 1000 + "rb";
   $("fMinus").onclick = () => { st.fingers = Math.max(1, st.fingers - 1); render(); };
   $("fPlus").onclick = () => { st.fingers = Math.min(10, st.fingers + 1); render(); };
   $("date").onchange = $("time").onchange = render;
-
-  // a gallery photo can load its design: Nail Gel on 10 fingers plus the add-ons in the photo
-  addEventListener("nails:load", e => {
-    st.base = 0; st.fingers = 10; st.remove = 0; st.adds = ADDS.map(a => e.detail[a[0]] || 0);
-    render();
-    scrollToEl($("nails"));
-  });
 
   render();
 </script>

@@ -1,7 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { isOpen, holyDays, nailEstimate, DAY } from "./bali.js";
-import { ADDS } from "../data/site.js";
+import { isOpen, holyDays, DAY } from "./bali.js";
 
 // times are given in Bali time (UTC+8)
 const bali = s => Date.parse(s + "+08:00");
@@ -21,9 +20,4 @@ test("next Galungan and Kuningan", () => {
   // on Galungan day itself it stays on that day
   assert.equal(holyDays(bali("2027-01-13T08:00")).gal, Date.UTC(2027, 0, 13));
   assert.equal(h.bookBy, h.gal - 14 * DAY);
-});
-
-test("nail estimate from a gallery photo", () => {
-  assert.equal(nailEstimate({ "Cat Eye": 10, "Chrome / Aurora": 6 }, ADDS), 72000);
-  assert.equal(nailEstimate({}, ADDS), 40000);
 });
