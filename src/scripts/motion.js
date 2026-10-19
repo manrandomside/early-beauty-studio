@@ -1,5 +1,9 @@
 export const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+// an element counts as seen once its top passes 82% of the screen height, so on phones
+// the motion plays where the reader is looking instead of at the very bottom edge
+const SEEN = "0px 0px -18% 0px";
+
 // Reveal on scroll, once: sections rise with their siblings staggered, headings slide up line by line.
 // Content stays visible without JS because the hidden state only applies under html.js.
 export function initReveal() {
@@ -11,7 +15,7 @@ export function initReveal() {
     if (!e.isIntersecting) return;
     e.target.classList.add("on");
     io.unobserve(e.target);
-  }), { threshold: .2 });
+  }), { rootMargin: SEEN });
   document.querySelectorAll(".rv").forEach(el => {
     const sib = [...el.parentElement.children].filter(c => c.classList.contains("rv"));
     el.style.setProperty("--d", sib.indexOf(el) * .12 + "s");
@@ -22,6 +26,6 @@ export function initReveal() {
 
 // Runs fn once when el first scrolls into view.
 export function onceVisible(el, fn) {
-  const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); fn(); } }, { threshold: .2 });
+  const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); fn(); } }, { rootMargin: SEEN });
   io.observe(el);
 }
