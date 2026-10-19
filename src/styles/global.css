@@ -1,0 +1,66 @@
+/* Dark plum hero that opens with the logo reveal, then porcelain sections framed with the logo's gold corners; mobile first. */
+:root {
+  --plum: #1d1416; --plum-2: #2a1d1f; --mauve: #8a5d56; --rose: #c99a91; --gold: #c9a45f; --gold-2: #e3c88f;
+  --porcelain: #fbf7f5; --blush: #f2e4df; --ink: #3a2624; --muted: #7c6560; --line: #e4d6d1;
+  --f-display: "Marcellus", "Times New Roman", serif;
+  --f-accent: "Cormorant Garamond", Georgia, serif;
+  --f-body: "Jost", system-ui, sans-serif;
+  --f-nota: "Courier Prime", ui-monospace, monospace;
+  --ease: cubic-bezier(.22,1,.36,1); --spring: cubic-bezier(.34,1.56,.64,1);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--porcelain); color: var(--ink); font: 300 16px/1.6 var(--f-body); overflow-x: hidden; }
+img { max-width: 100%; }
+a { color: inherit; }
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+[hidden] { display: none !important; }
+
+.in { max-width: 1120px; margin: 0 auto; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+section.s { padding-block: 84px; }
+.s-head { display: grid; gap: 14px; margin-bottom: 40px; }
+.s-head .eyebrow { color: var(--mauve); }
+.eyebrow { font: 500 11px/1.4 var(--f-body); letter-spacing: .32em; text-transform: uppercase; }
+h2 { font: 400 clamp(30px, 6vw, 52px)/1.05 var(--f-display); margin: 0; text-wrap: balance; letter-spacing: .01em; }
+h2 em { font: italic 400 1.08em/1 var(--f-accent); color: var(--mauve); }
+.lead { color: var(--muted); max-width: 46ch; margin: 0; }
+
+/* gold-corner frame borrowed from the logo */
+.framed { position: relative; }
+.framed::before, .framed::after { content: ""; position: absolute; width: 26px; height: 26px; border: 1.5px solid var(--gold); pointer-events: none; z-index: 2; }
+.framed::before { top: 8px; left: 8px; border-right: 0; border-bottom: 0; }
+.framed::after { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
+
+.ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 24px; font: 500 12px var(--f-body); letter-spacing: .2em; text-transform: uppercase; text-decoration: none; border: 1px solid currentColor; background: transparent; transition: background .25s, color .25s, transform .25s; }
+.btn:hover { transform: translateY(-2px); }
+.btn.dark { background: var(--plum); border-color: var(--plum); color: #f4e9e6; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips button { border: 1px solid #dcc3bc; background: rgba(255,255,255,.7); padding: 9px 14px; font-size: 14px; border-radius: 99px; }
+.chips button[aria-pressed="true"] { background: var(--plum); color: #f4e9e6; border-color: var(--plum); }
+.chips button small { opacity: .65; margin-left: 4px; }
+
+.row { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.row small { display: block; color: var(--muted); font-size: 12px; }
+
+.fade { opacity: 0; animation: fadeUp .9s ease forwards; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+/* reveal on scroll: rises once, siblings staggered (hidden only under html.js, so content shows without JS) */
+.js .rv { opacity: 0; transform: translateY(40px); transition: opacity .9s var(--ease) var(--d, 0s), transform .9s var(--ease) var(--d, 0s); }
+.js .rv.on { opacity: 1; transform: none; }
+.ml { display: block; overflow: hidden; padding-bottom: .1em; }
+.ml > span { display: inline-block; }
+.js .mlw .ml > span { transform: translateY(110%); transition: transform .95s var(--ease); }
+.js .mlw .ml:nth-child(2) > span { transition-delay: .1s; }
+.js .mlw.on .ml > span { transform: none; }
+
+@media (max-width: 820px) { section.s { padding-block: 64px; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; transition: none !important; }
+  .fade { opacity: 1; }
+  .js .rv { opacity: 1; transform: none; } .js .mlw .ml > span { transform: none; }
+}
