@@ -129,9 +129,9 @@ const WORDS = ["ujung kuku.", "helai bulu mata.", "lengkung alis."];
     setTimeout(() => { cur.classList.add("reset"); cur.classList.remove("out"); void cur.offsetWidth; cur.classList.remove("reset"); }, 1100);
   }, 3600), 3000);
 
-  // gold glitter drifting behind the hero
+  // gold glitter drifting behind the hero; it only animates while the hero is on screen
   const c = document.getElementById("dust"), x = c.getContext("2d");
-  let W = 0, H = 0, P = [];
+  let W = 0, H = 0, P = [], visible = true;
   const size = () => {
     const r = c.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1);
     W = c.width = r.width * d; H = c.height = r.height * d;
@@ -146,7 +146,8 @@ const WORDS = ["ujung kuku.", "helai bulu mata.", "lengkung alis."];
       x.fillStyle = `rgba(227,200,143,${(a * .8).toFixed(2)})`; x.beginPath(); x.arc(q.x, q.y, q.r, 0, 6.29); x.fill();
       if (q.r > 1.6 && a > .9) { x.strokeStyle = `rgba(255,236,200,${(a - .9) * 5})`; x.lineWidth = .6; x.beginPath(); x.moveTo(q.x - q.r * 4, q.y); x.lineTo(q.x + q.r * 4, q.y); x.moveTo(q.x, q.y - q.r * 4); x.lineTo(q.x, q.y + q.r * 4); x.stroke(); }
     }
-    if (!REDUCE) requestAnimationFrame(draw);
+    if (!REDUCE && visible) requestAnimationFrame(draw);
   };
   size(); addEventListener("resize", size); draw();
+  new IntersectionObserver(([e]) => { const was = visible; visible = e.isIntersecting; if (visible && !was) draw(); }).observe(c);
 </script>
