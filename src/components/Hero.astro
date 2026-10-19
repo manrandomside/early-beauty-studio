@@ -43,7 +43,8 @@ import { RIBBON } from "../data/site.js";
 
   .hero { position: relative; background: var(--plum); color: #f4e9e6; overflow: hidden; isolation: isolate; }
   .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
-  .hero .ghost { position: absolute; right: -12%; top: 6%; width: min(80vw, 620px); height: auto; opacity: .09; mix-blend-mode: lighten; z-index: -1; filter: blur(.3px); }
+  /* faint logo centered behind the headline, sized to the screen */
+  .hero .ghost { position: absolute; left: 50%; top: 48%; transform: translate(-50%, -50%); width: min(66vw, 460px); height: auto; opacity: .08; mix-blend-mode: lighten; z-index: -1; pointer-events: none; }
   .hero .glow { position: absolute; inset: auto -20% -30% -20%; height: 70%; background: radial-gradient(50% 60% at 50% 100%, rgba(138,93,86,.55), transparent 70%); z-index: -1; }
   .nav { display: flex; justify-content: space-between; align-items: center; padding-block: 16px; padding-top: max(16px, env(safe-area-inset-top, 0px)); }
   .nav .brand { display: flex; align-items: center; gap: 10px; font: 13px var(--f-display); letter-spacing: .32em; text-decoration: none; }
