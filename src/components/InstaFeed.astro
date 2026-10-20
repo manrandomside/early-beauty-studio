@@ -1,0 +1,51 @@
+---
+import { INSTA, IG } from "../data/site.js";
+// Instagram's own embed: posts stay hosted by Instagram; its script loads only when this section is near
+---
+<section class="s insta">
+  <div class="in">
+    <div class="s-head rv"><span class="eyebrow">Terbaru di Instagram · @earlybeauty.studio</span><h2>Langsung dari <em>feed kami.</em></h2></div>
+    <div class="insta-grid" id="insta">
+      {INSTA.map((code, i) => (
+        <blockquote class={i < 6 ? "instagram-media" : "ig-wait"} data-instgrm-permalink={`https://www.instagram.com/p/${code}/`} data-instgrm-version="14" hidden={i >= 6}>
+          <a href={`https://www.instagram.com/p/${code}/`} target="_blank" rel="noopener">Lihat postingan ini di Instagram</a>
+        </blockquote>
+      ))}
+    </div>
+    <p class="ctas insta-more">
+      {INSTA.length > 6 && <button type="button" class="btn" id="instaMore">Tampilkan lebih banyak</button>}
+      <a class="btn dark" href={IG} target="_blank" rel="noopener">Follow di Instagram</a>
+    </p>
+  </div>
+</section>
+
+<style is:global>
+  .insta-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: start; }
+  .insta-grid .instagram-media { min-width: 0 !important; width: 100% !important; margin: 0 !important; }
+  .insta-grid blockquote:not([data-instgrm-payload-id]) { display: grid; place-items: center; aspect-ratio: 4 / 5; background: var(--blush); border: 1px solid var(--line); }
+  .insta-grid blockquote[hidden] { display: none; }
+  .insta-grid blockquote a { font-size: 14px; color: var(--mauve); }
+  .insta-more { margin-top: 28px; }
+  .insta-more .btn:not(.dark) { color: var(--plum); }
+  @media (max-width: 980px) { .insta-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 620px) { .insta-grid { grid-template-columns: minmax(0, 1fr); } }
+</style>
+
+<script>
+  const grid = document.getElementById("insta")!;
+  const load = () => {
+    const w = window as typeof window & { instgrm?: { Embeds: { process(): void } } };
+    if (w.instgrm) return w.instgrm.Embeds.process();
+    const s = document.createElement("script");
+    s.src = "https://www.instagram.com/embed.js";
+    s.async = true;
+    document.body.append(s);
+  };
+  new IntersectionObserver(([e], io) => { if (e.isIntersecting) { io.disconnect(); load(); } }, { rootMargin: "600px 0px" }).observe(grid);
+  document.getElementById("instaMore")?.addEventListener("click", e => {
+    // the extra posts only get Instagram's class now, so its script leaves them alone until asked
+    grid.querySelectorAll("blockquote.ig-wait").forEach(b => { b.removeAttribute("hidden"); b.className = "instagram-media"; });
+    (e.currentTarget as HTMLElement).remove();
+    load();
+  });
+</script>
