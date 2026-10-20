@@ -1,0 +1,149 @@
+---
+import Base from "../../layouts/Base.astro";
+import { MAX } from "../../lib/announce.js";
+// ready-made messages for the days the studio is usually closed or busy; [tanggal] is filled in by the owner
+const TEMPLATES = [
+  ["Galungan", "gal"], ["Kuningan", "kun"], ["Nyepi", ""], ["Idul Fitri", ""], ["Idul Adha", ""],
+  ["Natal & Tahun Baru", ""], ["Libur studio", ""], ["Promo", ""], ["Slot penuh", ""]
+];
+---
+<Base path="/admin/" title="Admin · Early Beauty Studio" description="Halaman pemilik Early Beauty Studio." admin>
+  <main class="admin">
+    <a class="admin-brand" href="/">Early Beauty Studio</a>
+    <h1>Pengumuman</h1>
+    <p class="lead">Satu pesan singkat yang tampil di bagian paling atas semua halaman website.</p>
+
+    <form class="card" id="login">
+      <label for="pw">Kata sandi admin<input type="password" id="pw" autocomplete="current-password" required /></label>
+      <button class="btn dark" type="submit">Masuk</button>
+      <p class="msg" id="loginMsg" role="alert"></p>
+    </form>
+
+    <form class="card" id="editor" hidden>
+      <label class="switch"><input type="checkbox" id="on" /> <span>Tampilkan pengumuman</span></label>
+
+      <div>
+        <span class="label">Pakai template</span>
+        <div class="chips" id="templates">{TEMPLATES.map(([name, auto]) => <button type="button" data-t={name} data-auto={auto}>{name}</button>)}</div>
+      </div>
+
+      <label for="text">Isi pengumuman <small><span id="count">0</span>/{MAX}</small>
+        <textarea id="text" rows="3" maxlength={MAX}></textarea>
+      </label>
+
+      <div class="dates">
+        <label for="from">Tampil mulai <small>boleh kosong</small><input type="date" id="from" /></label>
+        <label for="to">Sampai <small>boleh kosong</small><input type="date" id="to" /></label>
+      </div>
+
+      <div>
+        <span class="label">Pratinjau</span>
+        <div class="preview" id="preview">Pengumuman akan tampil di sini.</div>
+      </div>
+
+      <button class="btn dark" type="submit" id="save">Simpan</button>
+      <p class="msg" id="msg" role="status"></p>
+    </form>
+  </main>
+</Base>
+
+<style>
+  .admin { max-width: 620px; margin: 0 auto; padding: 40px max(18px, env(safe-area-inset-left, 0px)) 80px; display: grid; gap: 18px; }
+  .admin-brand { font: 13px var(--f-display); letter-spacing: .32em; text-transform: uppercase; text-decoration: none; color: var(--mauve); }
+  .admin h1 { margin: 0; font: 400 clamp(34px, 7vw, 48px)/1.1 var(--f-display); }
+  .card { display: grid; gap: 22px; padding: 24px; background: #fff; border: 1px solid var(--line); }
+  .card[hidden] { display: none; }
+  label, .label { display: grid; gap: 8px; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  label small { letter-spacing: 0; text-transform: none; }
+  input, textarea { font: 16px/1.5 var(--f-body); padding: 12px; border: 1px solid var(--line); background: var(--porcelain); color: var(--ink); width: 100%; text-transform: none; letter-spacing: 0; }
+  .switch { display: flex; align-items: center; gap: 12px; font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--ink); }
+  .switch input { width: 22px; height: 22px; accent-color: var(--plum); }
+  .dates { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .preview { padding: 12px 16px; background: var(--gold-2); color: var(--plum); text-align: center; font: 500 14px/1.45 var(--f-body); letter-spacing: 0; text-transform: none; }
+  .preview.off { background: var(--blush); color: var(--muted); }
+  .msg { margin: 0; min-height: 1.4em; font-size: 15px; }
+  .msg.err { color: #a3372b; }
+  .msg.ok { color: #2f6b45; }
+</style>
+
+<script>
+  import { holyDays, DAY } from "../../lib/bali.js";
+  import { longDate } from "../../data/site.js";
+
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const iso = (t: number) => new Date(t).toISOString().slice(0, 10);
+  let password = "";
+  try { password = sessionStorage.getItem("admin-pw") ?? ""; } catch {}
+
+  // Galungan and Kuningan come from the Balinese calendar, so their dates are filled in; the rest the owner types
+  const { today, gal, prev } = holyDays();
+  // between Galungan and Kuningan the next Kuningan still belongs to the Galungan just passed
+  const kun = prev + 10 * DAY >= today ? prev + 10 * DAY : gal + 10 * DAY;
+  const TEXT: Record<string, (d?: string) => string> = {
+    "Galungan": d => `Studio libur saat Galungan, ${d}. Booking dari sekarang supaya kebagian slot sebelum hari raya.`,
+    "Kuningan": d => `Studio libur saat Kuningan, ${d}. Booking untuk hari lain lewat WhatsApp ya.`,
+    "Nyepi": () => "Studio tutup saat Nyepi, [tanggal]. Buka lagi [tanggal].",
+    "Idul Fitri": () => "Selamat Idul Fitri. Studio libur [tanggal] sampai [tanggal], buka lagi [tanggal].",
+    "Idul Adha": () => "Studio libur Idul Adha, [tanggal]. Buka lagi [tanggal].",
+    "Natal & Tahun Baru": () => "Studio libur [tanggal]. Selamat Natal dan Tahun Baru!",
+    "Libur studio": () => "Studio libur [tanggal]. Buka lagi [tanggal].",
+    "Promo": () => "Promo bulan ini: [isi promo]. Booking lewat WhatsApp.",
+    "Slot penuh": () => "Slot minggu ini sudah penuh. Booking untuk minggu depan lewat WhatsApp."
+  };
+
+  function render() {
+    const text = $<HTMLTextAreaElement>("text").value;
+    $("count").textContent = String(text.length);
+    const p = $("preview");
+    p.textContent = text.trim() || "Pengumuman akan tampil di sini.";
+    p.classList.toggle("off", !$<HTMLInputElement>("on").checked);
+  }
+
+  function say(id: string, text: string, ok = false) { const m = $(id); m.textContent = text; m.className = "msg " + (ok ? "ok" : "err"); }
+
+  async function open() {
+    $("login").hidden = true;
+    $("editor").hidden = false;
+    const a = await fetch("/api/announcement", { cache: "no-store" }).then(r => r.json()).catch(() => null);
+    if (a) { $<HTMLInputElement>("on").checked = a.on; $<HTMLTextAreaElement>("text").value = a.text; $<HTMLInputElement>("from").value = a.from; $<HTMLInputElement>("to").value = a.to; }
+    render();
+  }
+
+  $("login").addEventListener("submit", async e => {
+    e.preventDefault();
+    password = $<HTMLInputElement>("pw").value;
+    const r = await fetch("/api/login", { method: "POST", headers: { authorization: "Bearer " + password } }).catch(() => null);
+    if (r?.ok) { try { sessionStorage.setItem("admin-pw", password); } catch {} open(); }
+    else say("loginMsg", r ? "Kata sandi salah." : "Tidak bisa terhubung. Coba lagi.");
+  });
+
+  $("templates").addEventListener("click", e => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>("button");
+    if (!b) return;
+    const name = b.dataset.t!, auto = b.dataset.auto;
+    const day = auto === "gal" ? gal : auto === "kun" ? kun : 0;
+    $<HTMLTextAreaElement>("text").value = TEXT[name](day ? longDate(day) : undefined);
+    // a holiday reminder shows from a week before until the day itself
+    if (day) { $<HTMLInputElement>("from").value = iso(day - 7 * DAY); $<HTMLInputElement>("to").value = iso(day); }
+    $<HTMLInputElement>("on").checked = true;
+    render();
+    $("text").focus();
+  });
+  ["text", "on"].forEach(id => $(id).addEventListener("input", render));
+
+  $("editor").addEventListener("submit", async e => {
+    e.preventDefault();
+    const body = { on: $<HTMLInputElement>("on").checked, text: $<HTMLTextAreaElement>("text").value, from: $<HTMLInputElement>("from").value, to: $<HTMLInputElement>("to").value };
+    if (body.on && /\[[^\]]+\]/.test(body.text)) return say("msg", "Ganti dulu tulisan dalam kurung siku, misalnya [tanggal].");
+    $<HTMLButtonElement>("save").disabled = true;
+    const r = await fetch("/api/announcement", { method: "PUT", headers: { "content-type": "application/json", authorization: "Bearer " + password }, body: JSON.stringify(body) }).catch(() => null);
+    $<HTMLButtonElement>("save").disabled = false;
+    if (!r) return say("msg", "Tidak bisa terhubung. Coba lagi.");
+    const res = await r.json().catch(() => ({}));
+    if (r.status === 401) { $("editor").hidden = true; $("login").hidden = false; return say("loginMsg", "Kata sandi berubah atau salah. Masuk lagi."); }
+    if (!r.ok) return say("msg", res.error ?? "Gagal menyimpan.");
+    say("msg", body.on ? "Tersimpan. Pengumuman tampil di website dalam 1 menit." : "Tersimpan. Pengumuman disembunyikan.", true);
+  });
+
+  if (password) open();
+</script>
