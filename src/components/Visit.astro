@@ -13,6 +13,7 @@ import { ADDRESS, HOURS, WA_TEXT, IG, MAPS } from "../data/site.js";
         <div class="row"><span>Jam buka</span><span>{HOURS}<small id="nowOpen"></small></span></div>
         <div class="row"><span>Booking</span><span>WhatsApp {WA_TEXT}</span></div>
         <div class="row"><span>Google</span><span>5.0 ★ dari 3 ulasan</span></div>
+        <div class="row"><span>Galungan</span><span id="galungan">Rabu, 13 Januari 2027<small id="bookBy"></small></span></div>
       </div>
     </div>
   </div>
@@ -26,6 +27,14 @@ import { ADDRESS, HOURS, WA_TEXT, IG, MAPS } from "../data/site.js";
 </style>
 
 <script>
-  import { isOpen } from "../lib/bali.js";
-  document.getElementById("nowOpen").textContent = isOpen() ? "Sedang buka" : "Sedang tutup, buka lagi 10.00";
+  import { formatDate, longDate } from "../data/site.js";
+  import { isOpen, holyDays, DAY } from "../lib/bali.js";
+
+  const $ = id => document.getElementById(id);
+  $("nowOpen").textContent = isOpen() ? "Sedang buka" : "Sedang tutup, buka lagi 10.00";
+
+  // the busiest weeks of the year; dates come from the 210-day Bali calendar, so they never go stale
+  const { today, gal, bookBy } = holyDays();
+  $("galungan").firstChild.textContent = `${longDate(gal)} · ${Math.round((gal - today) / DAY)} hari lagi`;
+  $("bookBy").textContent = `Slot cepat penuh, booking sebelum ${formatDate(bookBy)}`;
 </script>

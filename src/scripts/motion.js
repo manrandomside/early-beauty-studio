@@ -36,8 +36,3 @@ export function initSmoothScroll() {
 }
 export const scrollToEl = el => lenis ? lenis.scrollTo(el) : el.scrollIntoView({ behavior: REDUCE ? "auto" : "smooth" });
 
-// Runs fn once when el first scrolls into view.
-export function onceVisible(el, fn) {
-  const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); fn(); } }, { rootMargin: SEEN });
-  io.observe(el);
-}
