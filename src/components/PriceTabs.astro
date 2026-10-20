@@ -1,0 +1,37 @@
+---
+// one service at a time on the price page; each tab is also a plain link, so without JS the page simply scrolls
+const TABS = [["lash", "Eyelash"], ["nails", "Nails"], ["alis", "Lash lift & alis"]];
+---
+<nav class="ptabs" aria-label="Pilih layanan">
+  <div class="in ptabs-row">
+    {TABS.map(([id, label], i) => <a href={`/harga/#${id}`} data-tab={id} aria-current={i === 0 ? "true" : undefined}>{label}</a>)}
+  </div>
+</nav>
+
+<style is:global>
+  .ptabs { position: sticky; top: 0; z-index: 20; background: rgba(251,247,245,.94); backdrop-filter: blur(10px); box-shadow: inset 0 -1px var(--line); }
+  .ptabs-row { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-block: 10px; }
+  .ptabs a { flex: none; padding: 10px 18px; border-radius: 99px; font: 500 12px var(--f-body); letter-spacing: .18em; text-transform: uppercase; text-decoration: none; color: var(--muted); }
+  .ptabs a[aria-current] { background: var(--plum); color: #f4e9e6; }
+  .js .tab-off { display: none; }
+</style>
+
+<script>
+  import { scrollToEl } from "../scripts/motion.js";
+
+  const tabs = [...document.querySelectorAll<HTMLAnchorElement>(".ptabs a")];
+  const ids = tabs.map(t => t.dataset.tab!);
+  function show(id: string, scroll: boolean) {
+    if (!ids.includes(id)) id = ids[0];
+    ids.forEach(x => document.getElementById(x)?.classList.toggle("tab-off", x !== id));
+    tabs.forEach(t => (t.dataset.tab === id ? t.setAttribute("aria-current", "true") : t.removeAttribute("aria-current")));
+    // reveal-on-scroll may not have fired for a section that was hidden
+    document.getElementById(id)?.querySelectorAll(".rv, .mlw").forEach(el => el.classList.add("on"));
+    if (scroll) scrollToEl(document.getElementById(id)!);
+  }
+  tabs.forEach(t => t.addEventListener("click", e => { e.preventDefault(); history.replaceState(null, "", "#" + t.dataset.tab); show(t.dataset.tab!, true); }));
+  // arriving from another page at /harga/#nails opens that tab
+  show(location.hash.slice(1), !!location.hash);
+  // the dock's "Hitung nails" link on this same page only changes the hash
+  addEventListener("hashchange", () => show(location.hash.slice(1), true));
+</script>

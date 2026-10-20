@@ -4,11 +4,13 @@ import PageHead from "../../components/PageHead.astro";
 import LashScale from "../../components/LashScale.astro";
 import NailCalculator from "../../components/NailCalculator.astro";
 import BrowLift from "../../components/BrowLift.astro";
+import PriceTabs from "../../components/PriceTabs.astro";
 import Footer from "../../components/Footer.astro";
 import Booking from "../../components/Booking.astro";
 ---
 <Base path="/harga/" title="Harga eyelash, nails & alis · Early Beauty Studio Negara" description="Daftar harga eyelash extension, nail art per jari, lash lift dan alis di Early Beauty Studio, Negara. Hitung harga nails sendiri lalu kirim notanya ke WhatsApp.">
   <PageHead path="/harga/" eyebrow="Harga & layanan" title="Tahu harganya" accent="sebelum datang." lead="Pilih gaya bulu mata, hitung harga nails per jari, dan lihat harga lash lift serta alis." />
+  <PriceTabs />
   <main>
     <LashScale />
     <NailCalculator />
