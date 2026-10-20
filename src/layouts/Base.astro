@@ -2,6 +2,7 @@
 import { Font } from "astro:assets";
 import "../styles/global.css";
 import Announce from "../components/Announce.astro";
+import Nav from "../components/Nav.astro";
 import { ADDRESS, WA, IG } from "../data/site.js";
 
 // each page passes its own title, description and path; the home page uses the defaults
@@ -61,6 +62,7 @@ const business = {
   </head>
   <body>
     {!admin && <Announce />}
+    {!admin && <Nav path={path} />}
     <slot />
     <script>
       import { initReveal, initSmoothScroll } from "../scripts/motion.js";

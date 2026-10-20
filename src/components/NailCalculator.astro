@@ -46,7 +46,7 @@ const k = n => n / 1000 + "rb";
   .step output { min-width: 22px; text-align: center; font: 700 13px var(--f-nota); }
 
   /* the receipt, with a torn bottom edge */
-  .nota-wrap { position: sticky; top: 20px; }
+  .nota-wrap { position: sticky; top: calc(var(--nav-h) + 84px); } /* clears the top bar and the price tabs */
   .nota { background: #fffdfa; padding: 26px 22px 34px; font: 14px/1.5 var(--f-nota); color: #3a2420; box-shadow: 0 24px 50px -26px rgba(80,40,35,.55); transform: rotate(-1deg);
     -webkit-mask: radial-gradient(7px at 50% 100%, #0000 98%, #000) 0 0/16px 100% repeat-x; mask: radial-gradient(7px at 50% 100%, #0000 98%, #000) 0 0/16px 100% repeat-x; }
   .nota .nh { text-align: center; border-bottom: 1px dashed #c9aaa3; padding-bottom: 12px; margin-bottom: 10px; }

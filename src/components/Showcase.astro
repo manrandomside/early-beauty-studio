@@ -31,7 +31,7 @@ import { photo } from "../data/photos.js";
   @media (prefers-reduced-motion: no-preference) {
     .works { padding-block: 0; }
     .works-pin { height: 280vh; }
-    .works-sticky { position: sticky; top: 0; height: 100svh; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+    .works-sticky { position: sticky; top: var(--nav-h); height: calc(100svh - var(--nav-h)); display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
     .work { width: min(330px, calc((100svh - 300px) * .8)); }
   }
   /* phones: a shorter hold so a quick thumb scroll never feels stuck */

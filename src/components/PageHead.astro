@@ -1,11 +1,9 @@
 ---
-import Nav from "./Nav.astro";
 // the dark band that opens every page except the home page
-const { path, eyebrow, title, accent, lead } = Astro.props;
+const { eyebrow, title, accent, lead } = Astro.props;
 ---
 <header class="hero page-head" id="top">
   <div class="in">
-    <Nav path={path} />
     <div class="ph-body">
       <span class="eyebrow fade">{eyebrow}</span>
       <h1 class="fade" style="animation-delay:.1s">{title} <em>{accent}</em></h1>

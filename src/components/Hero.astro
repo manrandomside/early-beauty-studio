@@ -2,11 +2,12 @@
 import { Image } from "astro:assets";
 import logoDark from "../assets/logo-dark.jpg";
 import { photo } from "../data/photos.js";
-import Nav from "./Nav.astro";
 const WORDS = ["ujung kuku.", "helai bulu mata.", "lengkung alis."];
 // one photo per word, in the same order; brow photos are before/after, so show the lower "after" half
 const SHOTS = [["n1", "50% 50%"], ["e1", "50% 45%"], ["b4", "50% 85%"]];
 ---
+<!-- the logo intro plays once per visit; coming back to the home page shows the hero straight away -->
+<script is:inline>try { if (sessionStorage.getItem("intro") || matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("quick"); sessionStorage.setItem("intro", "1"); } catch {}</script>
 <div id="intro" aria-hidden="true"><div class="mark"><Image src={logoDark} width={300} alt="" loading="eager" /></div></div>
 
 <header class="hero" id="top">
@@ -14,7 +15,6 @@ const SHOTS = [["n1", "50% 50%"], ["e1", "50% 45%"], ["b4", "50% 85%"]];
     {SHOTS.map(([key, pos], i) => <Image class:list={["hp", { on: i === 0 }]} src={photo(key)} widths={[640, 1100, 1600, 2000]} sizes="100vw" style={`object-position:${pos}`} alt="" loading="eager" fetchpriority={i === 0 ? "high" : "auto"} />)}
   </div>
   <div class="in">
-    <Nav path="/" />
     <div class="hero-frame">
       <span class="hc tl"></span><span class="hc tr"></span><span class="hc bl"></span><span class="hc br"></span>
       <div class="hf-top fade" style="animation-delay:2.9s">Eyelash · Nails · Brow</div>
@@ -34,6 +34,10 @@ const SHOTS = [["n1", "50% 50%"], ["e1", "50% 45%"], ["b4", "50% 85%"]];
   @keyframes reveal { to { clip-path: inset(0 0 0 0); } }
   @keyframes shine { to { transform: translateX(120%); } }
   @keyframes introOut { to { opacity: 0; visibility: hidden; transform: scale(1.04); } }
+  .quick #intro { display: none; }
+  .quick .hero .fade { animation-delay: .5s !important; }
+  .quick .hero-frame { animation-delay: 0s; }
+  .quick .rot { animation-delay: .55s; }
 
 
   /* the logo's square frame opens up and becomes the hero */
@@ -89,13 +93,14 @@ const SHOTS = [["n1", "50% 50%"], ["e1", "50% 45%"], ["b4", "50% 85%"]];
 <script>
   import { REDUCE } from "../scripts/motion.js";
 
-  setTimeout(() => document.getElementById("intro")?.remove(), 3200);
+  const quick = document.documentElement.classList.contains("quick");
+  setTimeout(() => document.getElementById("intro")?.remove(), quick ? 0 : 3200);
 
   // line 1: split into letters for the blur-rise, keeping words unbreakable
   const line = document.querySelector(".hero h1 .l > span");
   line.setAttribute("aria-label", line.textContent);
   let ci = 0;
-  line.innerHTML = line.textContent.split(" ").map(w => `<span style="white-space:nowrap" aria-hidden="true">${[...w].map(c => `<span class="ch" style="animation-delay:${(2.5 + ci++ * .045).toFixed(3)}s">${c}</span>`).join("")}</span>`).join(" ");
+  line.innerHTML = line.textContent.split(" ").map(w => `<span style="white-space:nowrap" aria-hidden="true">${[...w].map(c => `<span class="ch" style="animation-delay:${((quick ? .1 : 2.5) + ci++ * .045).toFixed(3)}s">${c}</span>`).join("")}</span>`).join(" ");
 
   // line 2: the current word is wiped out to the right, the next one is written in from the left
   // the photo behind changes together with the word
@@ -110,5 +115,5 @@ const SHOTS = [["n1", "50% 50%"], ["e1", "50% 45%"], ["b4", "50% 85%"]];
     }, 450);
     setTimeout(() => { curShot.classList.remove("on"); nextShot.classList.remove("in"); }, 1600);
     setTimeout(() => { cur.classList.add("reset"); cur.classList.remove("out"); void cur.offsetWidth; cur.classList.remove("reset"); }, 1100);
-  }, 3600), 3000);
+  }, 3600), quick ? 600 : 3000);
 </script>

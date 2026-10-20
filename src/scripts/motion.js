@@ -30,9 +30,10 @@ export function initReveal() {
 // Eased scrolling for mouse wheel and touch, with smooth anchor links.
 // syncTouch can feel off on iOS older than 16; those phones are rare enough to accept.
 let lenis = null;
+const NAV = 72; // height of the sticky top bar (--nav-h), so scrolled-to sections are not hidden under it
 export function initSmoothScroll() {
   if (REDUCE) return;
-  lenis = new Lenis({ autoRaf: true, anchors: true, syncTouch: true });
+  lenis = new Lenis({ autoRaf: true, anchors: { offset: -NAV }, syncTouch: true });
 }
-export const scrollToEl = el => lenis ? lenis.scrollTo(el) : el.scrollIntoView({ behavior: REDUCE ? "auto" : "smooth" });
+export const scrollToEl = el => lenis ? lenis.scrollTo(el, { offset: -NAV }) : scrollTo({ top: el.getBoundingClientRect().top + scrollY - NAV, behavior: REDUCE ? "auto" : "smooth" });
 
