@@ -13,7 +13,7 @@ const other = lang === "id" ? "en" : "id";
   <a class="brand" href={link(lang, "/")}><Image src={logoMark} width={84} alt="Logo Early Beauty" loading="eager" />EARLY BEAUTY</a>
   <div class="nav-right">
     <div class="links"><a href={link(lang, "/")} aria-current={path === "/" ? "page" : undefined}>{T("Beranda")}</a>{PAGES.map(([label, href]) => <a href={link(lang, href)} aria-current={href === path ? "page" : undefined}>{T(label)}</a>)}</div>
-    <a class="nav-lang" href={twin(lang, path)} hreflang={other} lang={other} aria-label={other === "en" ? "English version" : "Versi Bahasa Indonesia"}>{other.toUpperCase()}</a>
+    <a class="nav-lang" href={twin(lang, path)} hreflang={other} lang={other}>{other.toUpperCase()}<span class="sr-only">{other === "en" ? " · English" : " · Bahasa Indonesia"}</span></a>
     <button type="button" class="nav-book" data-sheet>Booking</button>
     <button type="button" class="nav-menu" aria-expanded="false" aria-controls="menu" data-open={T("Tutup")}>{T("Menu")}</button>
   </div>
