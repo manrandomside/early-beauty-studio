@@ -18,17 +18,15 @@ import { photo } from "../data/photos.js";
 </section>
 
 <style is:global>
-  /* dark showcase of the studio: pinned horizontal scroll on every screen */
-  .works { background: var(--plum); color: #f1e4e0; padding-block: 84px; }
-  .works .s-head .eyebrow { color: var(--gold-2); }
-  .works h2 em { color: var(--gold-2); }
+  /* showcase of the studio: pinned horizontal scroll on every screen */
+  .works { padding-block: 84px; }
   .works-track { display: flex; gap: 22px; padding-inline: max(18px, calc((100vw - 1120px) / 2 + 18px)); will-change: transform; }
   .work { flex: 0 0 auto; width: min(72vw, 330px); margin: 0; display: grid; gap: 12px; }
   .work .img { aspect-ratio: 4/5; max-width: 100%; overflow: hidden; position: relative; }
   .work .img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(var(--z, 1)); transition: transform .1s linear; }
-  .work figcaption { font-size: 12px; letter-spacing: .28em; text-transform: uppercase; color: var(--gold-2); }
-  .works-bar { height: 1px; background: rgba(255,255,255,.12); margin-top: 30px; position: relative; }
-  .works-bar i { position: absolute; left: 0; top: -1px; height: 3px; width: 0; background: var(--gold); }
+  .work figcaption { font-size: 12px; letter-spacing: .28em; text-transform: uppercase; color: var(--mauve); }
+  .works-bar { height: 1px; background: var(--line); margin-top: 30px; position: relative; }
+  .works-bar i { position: absolute; left: 0; top: -1px; height: 3px; width: 0; background: var(--mauve); }
   /* the section holds the screen while the photos slide sideways */
   @media (prefers-reduced-motion: no-preference) {
     .works { padding-block: 0; }
