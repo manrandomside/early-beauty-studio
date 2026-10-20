@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- the site is a single page; add new pages here if any are created -->
+<!-- one entry per page; add new pages here -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://earlybeauty.pages.dev/</loc></url>
+  <url><loc>https://earlybeauty.pages.dev/harga/</loc></url>
+  <url><loc>https://earlybeauty.pages.dev/galeri/</loc></url>
+  <url><loc>https://earlybeauty.pages.dev/kelas/</loc></url>
+  <url><loc>https://earlybeauty.pages.dev/kunjungi/</loc></url>
 </urlset>

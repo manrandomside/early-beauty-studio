@@ -1,0 +1,15 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import Courses from "../../components/Courses.astro";
+import Footer from "../../components/Footer.astro";
+import Booking from "../../components/Booking.astro";
+---
+<Base path="/kelas/" title="Kelas nail art & eyelash · Early Beauty Studio Negara" description="Kursus nail art, eyelash extension dan lash lift di Early Beauty Studio, Negara. Pilih paket ilmu saja atau ilmu + alat, lalu daftar lewat WhatsApp.">
+  <PageHead path="/kelas/" eyebrow="Kelas kecantikan" title="Belajar langsung" accent="di studio." lead="Kelas kecil, praktek langsung, dan pilihan paket dengan alat yang bisa dibawa pulang." />
+  <main>
+    <Courses />
+  </main>
+  <Footer />
+  <Booking />
+</Base>

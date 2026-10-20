@@ -3,8 +3,13 @@ import { Font } from "astro:assets";
 import "../styles/global.css";
 import { ADDRESS, WA, IG } from "../data/site.js";
 
-const title = "Early Beauty Studio · Eyelash, Nails & Alis di Negara, Jembrana";
-const description = "Studio eyelash extension, nail art, lash lift dan alis di Banyubiru, Negara, Jembrana. Cek harga, hitung harga nails, lalu booking lewat WhatsApp. Buka setiap hari 10.00–17.00 WITA.";
+// each page passes its own title, description and path; the home page uses the defaults
+const {
+  title = "Early Beauty Studio · Eyelash, Nails & Alis di Negara, Jembrana",
+  description = "Studio eyelash extension, nail art, lash lift dan alis di Banyubiru, Negara, Jembrana. Cek harga, hitung harga nails, lalu booking lewat WhatsApp. Buka setiap hari 10.00–17.00 WITA.",
+  path = "/"
+} = Astro.props;
+const url = new URL(path, Astro.site);
 
 // tells Google this is a local beauty salon, with hours and location
 const business = {
@@ -25,12 +30,12 @@ const business = {
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={Astro.site} />
+    <link rel="canonical" href={url} />
     <!-- link preview when the site is shared on WhatsApp, Instagram or Facebook -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.site} />
+    <meta property="og:url" content={url} />
     <meta property="og:site_name" content="Early Beauty Studio" />
     <meta property="og:locale" content="id_ID" />
     <meta property="og:image" content={new URL("/og.jpg", Astro.site)} />

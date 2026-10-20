@@ -72,7 +72,7 @@ const full = Object.fromEntries(await Promise.all(GALLERY.map(async ([, key]) =>
 
 <script>
   import { GALLERY, LASH, waLink } from "../data/site.js";
-  import { REDUCE, scrollToEl } from "../scripts/motion.js";
+  import { REDUCE } from "../scripts/motion.js";
 
   const $ = id => document.getElementById(id);
   const tiles = [...$("gallery").children], lb = $("lb");
@@ -114,5 +114,5 @@ const full = Object.fromEntries(await Promise.all(GALLERY.map(async ([, key]) =>
   $("lbClose").onclick = () => lb.close();
   lb.addEventListener("click", e => { if (e.target === lb) lb.close(); });
   lb.addEventListener("keydown", e => { if (e.key === "ArrowLeft") show(cur - 1); if (e.key === "ArrowRight") show(cur + 1); });
-  $("lbCalc").onclick = () => { lb.close(); scrollToEl($("nails")); };
+  $("lbCalc").onclick = () => { location.href = "/harga/#nails"; };
 </script>
