@@ -6,6 +6,20 @@ export const IG = "https://www.instagram.com/earlybeauty.studio/";
 export const MAPS = "https://maps.app.goo.gl/QnbwpMdqvM3QPx9p8";
 export const ADDRESS = "Jl. Raya Negara–Gilimanuk, Banyubiru, Jembrana";
 export const HOURS = "Setiap hari 10.00–17.00 WITA";
+export const GEO = [-8.3509707, 114.5964022]; // studio pin for the embedded map
+
+// the menu, one page each: [label, path]
+export const PAGES = [["Harga", "/harga/"], ["Galeri", "/galeri/"], ["Kelas", "/kelas/"], ["Kunjungi", "/kunjungi/"]];
+
+// Google rating as shown on Maps; update when new reviews come in
+export const GOOGLE = { rating: "5.0", count: 3 };
+// review wall: [name, text, source]. Empty until there are written reviews (the 3 on Google are stars only);
+// the wall shows itself as soon as this list has entries
+export const REVIEWS = [];
+
+// Instagram posts embedded on the gallery page, newest first. Embeds do not update themselves:
+// add a new post's code (from instagram.com/p/<code>/) here to show it.
+export const INSTA = ["DVxt40yks5t", "DVG05PZEhaD", "DVm8w0GkqH_", "DdtZJ5XC01b", "DdoHEhLyePX", "Dc4DX0vysar", "DafLBbCSipA", "DaOvRTfS4LD", "DaCwiXPyigC", "DZ9vR7DSWVM", "DZ0B2U_SRfX", "DZ0B0xNSG2A"];
 
 
 // [name, price, description]
