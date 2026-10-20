@@ -1,4 +1,4 @@
-/* Dark plum hero that opens with the logo reveal, then quiet porcelain sections; gold corners only frame the hero. Mobile first. */
+/* Dark plum hero that opens with the logo reveal, then quiet porcelain sections; gold corners from the logo frame the hero and the cards. Mobile first. */
 :root {
   --plum: #1d1416; --plum-2: #2a1d1f; --mauve: #8a5d56; --rose: #c99a91; --gold: #c9a45f; --gold-2: #e3c88f;
   --porcelain: #fbf7f5; --blush: #f2e4df; --ink: #3a2624; --muted: #7c6560; --line: #e4d6d1;
@@ -27,6 +27,12 @@ main > section + section:not(.nails) { box-shadow: inset 0 1px var(--line); }
 h2 { font: 400 clamp(30px, 6vw, 52px)/1.05 var(--f-display); margin: 0; text-wrap: balance; letter-spacing: .01em; }
 h2 em { font: italic 400 1.08em/1 var(--f-accent); color: var(--mauve); }
 .lead { color: var(--muted); max-width: 46ch; margin: 0; }
+
+/* gold-corner frame borrowed from the logo */
+.framed { position: relative; }
+.framed::before, .framed::after { content: ""; position: absolute; width: 26px; height: 26px; border: 1.5px solid var(--gold); pointer-events: none; z-index: 2; }
+.framed::before { top: 8px; left: 8px; border-right: 0; border-bottom: 0; }
+.framed::after { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
 
 .ctas { display: flex; gap: 12px; flex-wrap: wrap; }
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 24px; font: 500 12px var(--f-body); letter-spacing: .2em; text-transform: uppercase; text-decoration: none; border: 1px solid currentColor; background: transparent; transition: background .25s, color .25s, transform .25s; }
