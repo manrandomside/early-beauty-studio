@@ -7,7 +7,6 @@ export const MAPS = "https://maps.app.goo.gl/QnbwpMdqvM3QPx9p8";
 export const ADDRESS = "Jl. Raya Negara–Gilimanuk, Banyubiru, Jembrana";
 export const HOURS = "Setiap hari 10.00–17.00 WITA";
 
-export const RIBBON = ["Natural Classic 60K", "Russian Volume 75K", "Lash Lift 55K", "Brow Bomber 80K", "Nail Gel 4rb/jari", "Japanese Marble", "Kelas Nail · Eyelash · Lash Lift", "Threading Alis 40K"];
 
 // [name, price, description]
 export const LASH = [
