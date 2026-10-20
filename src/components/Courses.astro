@@ -9,7 +9,7 @@ import { COURSES, rp } from "../data/site.js";
     </div>
     <div class="tickets">
       {COURSES.map(c => (
-        <article class:list={["ticket rv", c.pro ? "pro" : "framed"]}><span class="tag">{c.tag}</span><h3>{c.name}</h3>
+        <article class:list={["ticket rv", { pro: c.pro }]}><span class="tag">{c.tag}</span><h3>{c.name}</h3>
           <div class="price" data-p={c.price.join("|")}>{rp(c.price[0])}</div>
           <p class="pkg" data-p={c.pkg.join("|")} aria-live="polite">{c.pkg[0]}</p>
           {c.materi && <div class="sub">Materi</div><ul>{c.materi.map(t => <li>{t}</li>)}</ul>}
@@ -43,7 +43,7 @@ import { COURSES, rp } from "../data/site.js";
   .ticket .sub { font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--muted); margin-bottom: -8px; }
   .ticket.pro .sub { color: #a99592; }
   .ticket ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; font-size: 14px; }
-  .ticket li::before { content: "✦"; color: var(--gold); margin-right: 10px; font-size: 10px; }
+  .ticket li::before { content: "–"; color: var(--muted); margin-right: 8px; }
   .bonus { display: flex; flex-wrap: wrap; gap: 6px; }
   .bonus span { font-size: 12.5px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 99px; }
   .ticket.pro .bonus span { border-color: #4a3638; }

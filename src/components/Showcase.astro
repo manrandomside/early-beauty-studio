@@ -9,7 +9,7 @@ import { photo } from "../data/photos.js";
       <div class="in"><div class="s-head rv" style="margin-bottom:30px"><span class="eyebrow">Early Beauty Studio · Banyubiru, Negara</span><h2>Masuk dulu, <em>lihat-lihat sebentar.</em></h2></div></div>
       <div class="works-track" id="worksTrack">
         {WORKS.map(([label, key]) => (
-          <figure class="work"><div class="img framed"><Image src={photo(key)} widths={[360, 660]} sizes="330px" alt={`${label} di Early Beauty Studio`} /></div><figcaption>{label}</figcaption></figure>
+          <figure class="work"><div class="img"><Image src={photo(key)} widths={[360, 660]} sizes="330px" alt={`${label} di Early Beauty Studio`} /></div><figcaption>{label}</figcaption></figure>
         ))}
       </div>
       <div class="in"><div class="works-bar"><i id="worksBar"></i></div></div>
