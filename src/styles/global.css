@@ -17,6 +17,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 [hidden] { display: none !important; }
 
+/* dark opening band: the home hero and every page's head */
+.hero { position: relative; background: var(--plum); color: #f4e9e6; overflow: hidden; isolation: isolate; }
+
 .in { max-width: 1120px; margin: 0 auto; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
 section.s { padding-block: 84px; }
 /* a hairline between light sections instead of changing background colors */
