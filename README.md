@@ -18,6 +18,18 @@ Website untuk **Early Beauty Studio**, studio eyelash extension, nail art, lash 
 
 Website ini tidak memakai backend. Pemilik studio tidak perlu login, mengisi jadwal, atau merawat apa pun.
 
+## Halaman
+
+| Halaman | Isi |
+|---|---|
+| `/` Beranda | Hero, etalase studio, kartu layanan beserta harga mulai, dan ulasan |
+| `/harga/` | Skala bulu mata, nota nails, serta harga lash lift dan alis |
+| `/galeri/` | Foto hasil kerja dengan filter, lalu postingan terbaru dari Instagram |
+| `/kelas/` | Kursus nail art, eyelash, dan lash lift dengan pilihan paket |
+| `/kunjungi/` | Peta dengan titik lokasi studio, jam buka, pengingat Galungan, dan ulasan |
+
+Di HP, tombol **Menu** membuka daftar halaman, dan bar di bawah layar berisi tombol hitung nails dan booking.
+
 ## Fitur
 
 | Fitur | Keterangan |
@@ -29,13 +41,17 @@ Website ini tidak memakai backend. Pemilik studio tidak perlu login, mengisi jad
 | Galeri | Foto hasil kerja dengan filter per layanan. Ketuk foto untuk melihat kisaran harga dan booking dengan foto itu sebagai contoh |
 | Kelas kecantikan | 4 program kursus dengan pilihan paket *ilmu saja* atau *ilmu + alat*. Harga dan isi paket ikut berubah |
 | Booking | Panel booking dari bawah layar: pilih layanan, tanggal, dan jam, lalu pesan WhatsApp siap dikirim |
-| Info kunjungan | Status buka/tutup otomatis (WITA), alamat, peta, dan pengingat Galungan berikutnya |
+| Info kunjungan | Peta Google dengan titik studio, status buka/tutup otomatis (WITA), alamat, dan pengingat Galungan berikutnya |
+| Instagram | 12 postingan terbaru ditampilkan dengan embed resmi Instagram. Script-nya baru dimuat saat bagian itu hampir terlihat |
+| Ulasan | Rating Google dan tombol "Tulis ulasan di Google". Dinding ulasan muncul sendiri begitu `REVIEWS` diisi |
 
 ## Cara kerja tanpa backend
 
 - **Jam buka** dihitung dari jam di HP pengunjung lalu dikonversi ke WITA (UTC+8).
 - **Galungan dan Kuningan** dihitung dari siklus pawukon 210 hari, jadi tanggalnya selalu terbaru tanpa perlu diisi manual.
 - **Booking** memakai link `wa.me` dengan pesan yang sudah terisi. Slot tetap dikonfirmasi langsung oleh studio.
+- **Postingan Instagram baru** tidak muncul sendiri. Tambahkan kodenya (bagian setelah `instagram.com/p/`) di depan daftar `INSTA` dalam [`src/data/site.js`](src/data/site.js).
+- **Ulasan** ditulis di `REVIEWS` dalam file yang sama, dengan format `[nama, teks, sumber]`. Perbarui juga `GOOGLE` saat jumlah ulasan bertambah.
 - **Semua harga** ada di satu file, [`src/data/site.js`](src/data/site.js). Cukup ubah di sana dan seluruh halaman ikut berubah.
 
 ## Teknologi
