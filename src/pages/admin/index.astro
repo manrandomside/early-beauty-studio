@@ -39,6 +39,7 @@ const TEMPLATES = [
       <div>
         <span class="label">Pratinjau</span>
         <div class="preview" id="preview">Pengumuman akan tampil di sini.</div>
+        <p class="when" id="when" aria-live="polite"></p>
       </div>
 
       <button class="btn dark" type="submit" id="save">Simpan</button>
@@ -64,11 +65,14 @@ const TEMPLATES = [
   .msg { margin: 0; min-height: 1.4em; font-size: 15px; }
   .msg.err { color: #a3372b; }
   .msg.ok { color: #2f6b45; }
+  .when { margin: 10px 0 0; font-size: 14px; letter-spacing: 0; text-transform: none; color: var(--ink); }
+  .when.wait { color: #8a5a12; }
 </style>
 
 <script>
   import { holyDays, DAY } from "../../lib/bali.js";
   import { longDate } from "../../data/site.js";
+  import { showNow, baliToday } from "../../lib/announce.js";
 
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
   const iso = (t: number) => new Date(t).toISOString().slice(0, 10);
@@ -91,7 +95,22 @@ const TEMPLATES = [
     "Slot penuh": () => "Slot minggu ini sudah penuh. Booking untuk minggu depan lewat WhatsApp."
   };
 
+  // says plainly whether the bar is on the site right now, so a date range left over from a template is noticed
+  const dayName = (d: string) => longDate(Date.parse(d + "T00:00:00Z"));
+  function whenText(a: { on: boolean; text: string; from: string; to: string }) {
+    const today = baliToday();
+    if (!a.on) return ["Pengumuman disembunyikan dari website.", false];
+    if (!a.text.trim()) return ["Tulis isi pengumumannya dulu.", true];
+    if (showNow(a, today)) return [a.to ? `Tampil di website sekarang, sampai ${dayName(a.to)}.` : "Tampil di website sekarang, sampai dimatikan.", false];
+    if (a.from && a.from > today) return [`Belum tampil. Pengumuman baru muncul mulai ${dayName(a.from)}. Kosongkan "Tampil mulai" kalau ingin tampil sekarang.`, true];
+    return [`Tidak tampil, karena tanggal "Sampai" (${dayName(a.to)}) sudah lewat.`, true];
+  }
+  const current = () => ({ on: $<HTMLInputElement>("on").checked, text: $<HTMLTextAreaElement>("text").value, from: $<HTMLInputElement>("from").value, to: $<HTMLInputElement>("to").value });
+
   function render() {
+    const [w, wait] = whenText(current());
+    $("when").textContent = w as string;
+    $("when").classList.toggle("wait", wait as boolean);
     const text = $<HTMLTextAreaElement>("text").value;
     $("count").textContent = String(text.length);
     const p = $("preview");
@@ -124,16 +143,18 @@ const TEMPLATES = [
     const day = auto === "gal" ? gal : auto === "kun" ? kun : 0;
     $<HTMLTextAreaElement>("text").value = TEXT[name](day ? longDate(day) : undefined);
     // a holiday reminder shows from a week before until the day itself
-    if (day) { $<HTMLInputElement>("from").value = iso(day - 7 * DAY); $<HTMLInputElement>("to").value = iso(day); }
+    // a holiday shows from a week before; other templates start today with no end date
+    $<HTMLInputElement>("from").value = day ? iso(day - 7 * DAY) : "";
+    $<HTMLInputElement>("to").value = day ? iso(day) : "";
     $<HTMLInputElement>("on").checked = true;
     render();
     $("text").focus();
   });
-  ["text", "on"].forEach(id => $(id).addEventListener("input", render));
+  ["text", "on", "from", "to"].forEach(id => $(id).addEventListener("input", render));
 
   $("editor").addEventListener("submit", async e => {
     e.preventDefault();
-    const body = { on: $<HTMLInputElement>("on").checked, text: $<HTMLTextAreaElement>("text").value, from: $<HTMLInputElement>("from").value, to: $<HTMLInputElement>("to").value };
+    const body = current();
     if (body.on && /\[[^\]]+\]/.test(body.text)) return say("msg", "Ganti dulu tulisan dalam kurung siku, misalnya [tanggal].");
     $<HTMLButtonElement>("save").disabled = true;
     const r = await fetch("/api/announcement", { method: "PUT", headers: { "content-type": "application/json", authorization: "Bearer " + password }, body: JSON.stringify(body) }).catch(() => null);
@@ -142,7 +163,8 @@ const TEMPLATES = [
     const res = await r.json().catch(() => ({}));
     if (r.status === 401) { $("editor").hidden = true; $("login").hidden = false; return say("loginMsg", "Kata sandi berubah atau salah. Masuk lagi."); }
     if (!r.ok) return say("msg", res.error ?? "Gagal menyimpan.");
-    say("msg", body.on ? "Tersimpan. Pengumuman tampil di website dalam 1 menit." : "Tersimpan. Pengumuman disembunyikan.", true);
+    const [w, wait] = whenText(body);
+    say("msg", "Tersimpan. " + (wait || !body.on ? w : w + " Perubahan terlihat di website dalam 1 menit."), !wait);
   });
 
   if (password) open();
