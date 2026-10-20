@@ -1,0 +1,31 @@
+<!-- The owner's announcement from /admin, shown above every page while it is switched on and within its dates. -->
+<div class="announce" id="announce" role="status" hidden>
+  <p id="announceText"></p>
+  <button type="button" id="announceClose" aria-label="Tutup pengumuman">×</button>
+</div>
+
+<style is:global>
+  .announce { position: relative; z-index: 42; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 10px 44px; padding-top: max(10px, env(safe-area-inset-top, 0px)); background: var(--gold-2); color: var(--plum); text-align: center; font: 500 14px/1.45 var(--f-body); animation: fadeUp .5s var(--ease); }
+  .announce p { margin: 0; max-width: 70ch; }
+  .announce button { position: absolute; right: max(8px, env(safe-area-inset-right, 0px)); top: 50%; translate: 0 -50%; width: 36px; height: 36px; border: 0; background: none; font-size: 22px; line-height: 1; color: var(--plum); }
+</style>
+
+<script>
+  import { showNow, baliToday } from "../lib/announce.js";
+
+  const bar = document.getElementById("announce")!;
+  fetch("/api/announcement")
+    .then(r => (r.ok ? r.json() : null))
+    .then(a => {
+      if (!showNow(a, baliToday())) return;
+      // a closed message stays closed for this visit, a new message shows again
+      try { if (sessionStorage.getItem("announce-closed") === a.text) return; } catch {}
+      document.getElementById("announceText")!.textContent = a.text;
+      bar.hidden = false;
+    })
+    .catch(() => {}); // no announcement service (e.g. local dev): the page simply shows no bar
+  document.getElementById("announceClose")!.addEventListener("click", () => {
+    bar.hidden = true;
+    try { sessionStorage.setItem("announce-closed", document.getElementById("announceText")!.textContent ?? ""); } catch {}
+  });
+</script>
