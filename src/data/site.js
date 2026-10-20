@@ -13,6 +13,8 @@ export const PAGES = [["Harga", "/harga/"], ["Galeri", "/galeri/"], ["Kelas", "/
 
 // Google rating as shown on Maps; update when new reviews come in
 export const GOOGLE = { rating: "5.0", count: 3 };
+// Instagram numbers for the trust row, rounded down (checked 20 Oct 2026: 784 posts, 1,373 followers)
+export const INSTA_STATS = { posts: "780+", followers: "1.300+" };
 // review wall: [name, text, source]. Empty until there are written reviews (the 3 on Google are stars only);
 // the wall shows itself as soon as this list has entries
 export const REVIEWS = [];
