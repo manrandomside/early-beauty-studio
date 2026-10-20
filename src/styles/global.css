@@ -18,6 +18,7 @@ a { color: inherit; }
 button { font: inherit; color: inherit; cursor: pointer; }
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 [hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 /* dark opening band: the home hero and every page's head */
 .hero { position: relative; background: var(--plum); color: #f4e9e6; overflow: hidden; isolation: isolate; }

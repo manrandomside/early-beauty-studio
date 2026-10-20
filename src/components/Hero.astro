@@ -12,25 +12,25 @@ const SHOTS = [["n1", "50% 50%"], ["e1", "50% 45%"], ["b4", "50% 85%"]];
 
 <header class="hero" id="top">
   <div class="hf-photos" aria-hidden="true">
-    {SHOTS.map(([key, pos], i) => <Image class:list={["hp", { on: i === 0 }]} src={photo(key)} widths={[640, 1100, 1600, 2000]} sizes="100vw" style={`object-position:${pos}`} alt="" loading="eager" fetchpriority={i === 0 ? "high" : "auto"} />)}
+    {SHOTS.map(([key, pos], i) => <Image class:list={["hp", { on: i === 0 }]} src={photo(key)} widths={[480, 800, 1200, 1600, 2000]} sizes="100vw" style={`object-position:${pos}`} alt="" loading={i === 0 ? "eager" : "lazy"} fetchpriority={i === 0 ? "high" : "low"} />)}
   </div>
   <div class="in">
     <div class="hero-frame">
       <span class="hc tl"></span><span class="hc tr"></span><span class="hc bl"></span><span class="hc br"></span>
-      <div class="hf-top fade" style="animation-delay:2.9s">Eyelash · Nails · Brow</div>
+      <div class="hf-top fade" style="animation-delay:2.1s">Eyelash · Nails · Brow</div>
       <h1><span class="l"><span>Cantik sampai ke</span></span><span class="l"><span class="rot" id="rot">{WORDS.map((w, i) => <em class:list={["w", { on: i === 0 }]} aria-hidden={i > 0 ? "true" : undefined}>{w}</em>)}</span></span></h1>
-      <div class="hf-rule fade" style="animation-delay:3.1s"></div>
-      <div class="hf-links fade" style="animation-delay:3.2s"><a href="/harga/#nails">Hitung harga nails</a><a href="/harga/#lash">Pilih gaya bulu mata</a></div>
+      <div class="hf-rule fade" style="animation-delay:2.3s"></div>
+      <div class="hf-links fade" style="animation-delay:2.4s"><a href="/harga/#nails">Hitung harga nails</a><a href="/harga/#lash">Pilih gaya bulu mata</a></div>
     </div>
   </div>
 </header>
 
 <style is:global>
   /* intro: the logo opens from the middle, then a gold shine passes over it */
-  #intro { position: fixed; inset: 0; z-index: 50; background: var(--plum); display: grid; place-items: center; animation: introOut .7s ease 2.3s forwards; }
+  #intro { position: fixed; inset: 0; z-index: 50; background: var(--plum); display: grid; place-items: center; animation: introOut .6s ease 1.5s forwards; }
   #intro .mark { width: min(56vw, 300px); aspect-ratio: 1; position: relative; overflow: hidden; }
-  #intro img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: lighten; clip-path: inset(50% 50% 50% 50%); animation: reveal 1.3s cubic-bezier(.7,0,.2,1) .15s forwards; }
-  #intro .mark::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 35%, rgba(227,200,143,.55) 50%, transparent 65%); transform: translateX(-120%); animation: shine 1.1s ease 1.3s forwards; mix-blend-mode: screen; }
+  #intro img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: lighten; clip-path: inset(50% 50% 50% 50%); animation: reveal 1s cubic-bezier(.7,0,.2,1) .1s forwards; }
+  #intro .mark::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 35%, rgba(227,200,143,.55) 50%, transparent 65%); transform: translateX(-120%); animation: shine .9s ease .8s forwards; mix-blend-mode: screen; }
   @keyframes reveal { to { clip-path: inset(0 0 0 0); } }
   @keyframes shine { to { transform: translateX(120%); } }
   @keyframes introOut { to { opacity: 0; visibility: hidden; transform: scale(1.04); } }
@@ -43,7 +43,7 @@ const SHOTS = [["n1", "50% 50%"], ["e1", "50% 45%"], ["b4", "50% 85%"]];
   /* the logo's square frame opens up and becomes the hero */
   .hero-frame { position: relative; margin-block: 5vh 56px; padding: clamp(56px, 10vw, 110px) clamp(18px, 5vw, 64px); display: grid; justify-items: center; gap: 26px; text-align: center;
     border: 1px solid rgba(201,164,95,.5);
-    animation: frameIn 1.2s cubic-bezier(.7,0,.2,1) 2.1s both; }
+    animation: frameIn 1.2s cubic-bezier(.7,0,.2,1) 1.3s both; }
   @keyframes frameIn { from { clip-path: inset(50% 50% 50% 50%); } to { clip-path: inset(-20px); } }
   /* full-bleed photo behind the whole hero, the frame floats over it; the next photo is wiped in from the left,
      the same way the word is written, while the visible one zooms out slowly so the still photo feels alive */
@@ -74,7 +74,7 @@ const SHOTS = [["n1", "50% 50%"], ["e1", "50% 45%"], ["b4", "50% 85%"]];
   @keyframes chIn { to { opacity: 1; filter: blur(0); transform: none; } }
   /* line 2: the italic is written in from left to right, then rewritten every few seconds */
   /* all words share one grid cell, so the line keeps the size of the longest word and nothing below jumps */
-  .rot { display: inline-grid; animation: wipe 1.1s var(--ease) 3.05s both; }
+  .rot { display: inline-grid; animation: wipe 1.1s var(--ease) 2.25s both; }
   @keyframes wipe { from { clip-path: inset(-30% 100% -30% 0); } to { clip-path: inset(-30% -6% -30% 0); } }
   .hero h1 em { font: italic 400 min(1.62em, 11.5vw)/1.05 var(--f-accent); color: var(--gold-2); white-space: nowrap; }
   .rot .w { grid-area: 1 / 1; clip-path: inset(-30% 100% -30% 0); transition: clip-path .6s var(--ease); }
@@ -94,13 +94,12 @@ const SHOTS = [["n1", "50% 50%"], ["e1", "50% 45%"], ["b4", "50% 85%"]];
   import { REDUCE } from "../scripts/motion.js";
 
   const quick = document.documentElement.classList.contains("quick");
-  setTimeout(() => document.getElementById("intro")?.remove(), quick ? 0 : 3200);
+  setTimeout(() => document.getElementById("intro")?.remove(), quick ? 0 : 2200);
 
   // line 1: split into letters for the blur-rise, keeping words unbreakable
   const line = document.querySelector(".hero h1 .l > span");
-  line.setAttribute("aria-label", line.textContent);
   let ci = 0;
-  line.innerHTML = line.textContent.split(" ").map(w => `<span style="white-space:nowrap" aria-hidden="true">${[...w].map(c => `<span class="ch" style="animation-delay:${((quick ? .1 : 2.5) + ci++ * .045).toFixed(3)}s">${c}</span>`).join("")}</span>`).join(" ");
+  line.innerHTML = `<span class="sr-only">${line.textContent}</span>` + line.textContent.split(" ").map(w => `<span style="white-space:nowrap" aria-hidden="true">${[...w].map(c => `<span class="ch" style="animation-delay:${((quick ? .1 : 1.7) + ci++ * .045).toFixed(3)}s">${c}</span>`).join("")}</span>`).join(" ");
 
   // line 2: the current word is wiped out to the right, the next one is written in from the left
   // the photo behind changes together with the word
@@ -115,5 +114,5 @@ const SHOTS = [["n1", "50% 50%"], ["e1", "50% 45%"], ["b4", "50% 85%"]];
     }, 450);
     setTimeout(() => { curShot.classList.remove("on"); nextShot.classList.remove("in"); }, 1600);
     setTimeout(() => { cur.classList.add("reset"); cur.classList.remove("out"); void cur.offsetWidth; cur.classList.remove("reset"); }, 1100);
-  }, 3600), quick ? 600 : 3000);
+  }, 3600), quick ? 600 : 2200);
 </script>

@@ -5,6 +5,8 @@ const google = (name, cssVariable, weights, styles, fallbacks) => ({ provider: f
 export default defineConfig({
   // site is the public address; link previews (WhatsApp, Instagram) need absolute image URLs
   site: "https://earlybeauty.pages.dev",
+  // pages load in the background when a link is hovered or tapped, so moving between pages feels instant
+  prefetch: { prefetchAll: true, defaultStrategy: "hover" },
   // fonts are downloaded at build time and served from the site itself, so no request goes to Google
   fonts: [
     google("Marcellus", "--font-marcellus", [400], ["normal"], ["serif"]),

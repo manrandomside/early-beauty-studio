@@ -12,9 +12,9 @@ import { ADDRESS, HOURS, WA_TEXT, IG } from "../data/site.js";
       <p>Studio eyelash, nails, lash lift dan alis di Negara, Jembrana. Booking cukup lewat WhatsApp.</p>
       <a href={IG} target="_blank" rel="noopener">Instagram @earlybeauty.studio</a>
     </div>
-    <div><h4>Layanan</h4><a href="/harga/#lash">Eyelash Extension</a><a href="/harga/#nails">Nails</a><a href="/harga/#alis">Lash Lift &amp; Alis</a><a href="/kelas/">Kelas kecantikan</a></div>
-    <div><h4>Jelajahi</h4><a href="/">Beranda</a><a href="/galeri/">Galeri</a><a href="/kunjungi/">Kunjungi studio</a><button type="button" data-sheet>Booking</button></div>
-    <div><h4>Kunjungi</h4><p>{ADDRESS}</p><p>{HOURS}</p><p>WA {WA_TEXT}</p></div>
+    <div><h2 class="foot-h">Layanan</h2><a href="/harga/#lash">Eyelash Extension</a><a href="/harga/#nails">Nails</a><a href="/harga/#alis">Lash Lift &amp; Alis</a><a href="/kelas/">Kelas kecantikan</a></div>
+    <div><h2 class="foot-h">Jelajahi</h2><a href="/">Beranda</a><a href="/galeri/">Galeri</a><a href="/kunjungi/">Kunjungi studio</a><button type="button" data-sheet>Booking</button></div>
+    <div><h2 class="foot-h">Kunjungi</h2><p>{ADDRESS}</p><p>{HOURS}</p><p>WA {WA_TEXT}</p></div>
   </div>
   <div class="in"><div class="foot-bottom">© {new Date().getFullYear()} Early Beauty Studio · Negara, Jembrana, Bali</div></div>
 </footer>
@@ -24,7 +24,7 @@ import { ADDRESS, HOURS, WA_TEXT, IG } from "../data/site.js";
   .foot { position: relative; overflow: hidden; background: var(--plum); color: #bfaaa5; font-size: 15px; padding-block: 72px 30px; }
   .foot-mark { position: absolute; left: 50%; top: 50%; width: min(96vw, 760px); height: auto; transform: translate(-50%, -50%); opacity: .07; mix-blend-mode: lighten; pointer-events: none; }
   .foot-grid { position: relative; display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 36px; }
-  .foot-grid h4 { margin: 0 0 14px; font: 500 12px var(--f-body); letter-spacing: .24em; text-transform: uppercase; color: var(--gold-2); }
+  .foot-grid .foot-h { margin: 0 0 14px; font: 500 12px var(--f-body); letter-spacing: .24em; text-transform: uppercase; color: var(--gold-2); }
   .foot-grid a, .foot-grid button { display: block; padding: 5px 0; color: #e6d6d1; text-decoration: none; background: none; border: 0; font: inherit; text-align: left; transition: color .25s; }
   .foot-grid a:hover, .foot-grid button:hover { color: var(--gold-2); }
   .foot-grid p { margin: 0 0 6px; max-width: 34ch; }
