@@ -1,20 +1,22 @@
 ---
+import { langOf, tr } from "../i18n/index.js";
+const lang = langOf(Astro.url), T = s => tr(lang, s);
 import { INSTA, IG } from "../data/site.js";
 // Instagram's own embed: posts stay hosted by Instagram; its script loads only when this section is near
 ---
 <section class="s insta">
   <div class="in">
-    <div class="s-head rv"><span class="eyebrow">Terbaru di Instagram · @earlybeauty.studio</span><h2>Langsung dari <em>feed kami.</em></h2></div>
+    <div class="s-head rv"><span class="eyebrow">{T("Terbaru di Instagram")} · @earlybeauty.studio</span><h2>{T("Langsung dari")} <em>{T("feed kami.")}</em></h2></div>
     <div class="insta-grid" id="insta">
       {INSTA.map((code, i) => (
         <blockquote class={i < 6 ? "instagram-media" : "ig-wait"} data-instgrm-permalink={`https://www.instagram.com/p/${code}/`} data-instgrm-version="14" hidden={i >= 6}>
-          <a href={`https://www.instagram.com/p/${code}/`} target="_blank" rel="noopener">Lihat postingan ini di Instagram</a>
+          <a href={`https://www.instagram.com/p/${code}/`} target="_blank" rel="noopener">{T("Lihat postingan ini di Instagram")}</a>
         </blockquote>
       ))}
     </div>
     <p class="ctas insta-more">
-      {INSTA.length > 6 && <button type="button" class="btn" id="instaMore">Tampilkan lebih banyak</button>}
-      <a class="btn dark" href={IG} target="_blank" rel="noopener">Follow di Instagram</a>
+      {INSTA.length > 6 && <button type="button" class="btn" id="instaMore">{T("Tampilkan lebih banyak")}</button>}
+      <a class="btn dark" href={IG} target="_blank" rel="noopener">{T("Follow di Instagram")}</a>
     </p>
   </div>
 </section>

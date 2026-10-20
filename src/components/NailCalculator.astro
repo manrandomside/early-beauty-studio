@@ -1,30 +1,32 @@
 ---
+import { langOf, tr } from "../i18n/index.js";
+const lang = langOf(Astro.url), T = s => tr(lang, s);
 import { BASES, ADDS, REMOVES, TIMES } from "../data/site.js";
-const k = n => n / 1000 + "rb";
+const k = n => n / 1000 + T("rb");
 ---
 <section class="s nails" id="nails">
   <div class="in">
-    <div class="s-head rv"><span class="eyebrow">Nails · harga per jari</span><h2>Pilih desainnya, <em>langsung tahu totalnya.</em></h2><p class="lead">Pilih dasar kuku dan desainnya. Nota langsung terhitung, lalu kirim ke WhatsApp untuk booking.</p></div>
+    <div class="s-head rv"><span class="eyebrow">{T("Nails · harga per jari")}</span><h2>{T("Pilih desainnya,")} <em>{T("langsung tahu totalnya.")}</em></h2><p class="lead">{T("Pilih dasar kuku dan desainnya. Nota langsung terhitung, lalu kirim ke WhatsApp untuk booking.")}</p></div>
     <div class="calc">
       <div class="pick">
-        <div><h3>1 · Dasar kuku</h3><div class="chips" id="bases">{BASES.map((b, i) => <button type="button" data-i={i}>{b[0]}<small>{k(b[1])}</small></button>)}</div>
-          <div class="fingers">Jumlah jari <span class="step"><button type="button" id="fMinus" aria-label="Kurangi jari">−</button><output id="fingers">10</output><button type="button" id="fPlus" aria-label="Tambah jari">+</button></span></div></div>
-        <div><h3>2 · Desain &amp; hiasan (per jari)</h3><div class="adds" id="adds">{ADDS.map((a, i) => (
-          <div class="add" id={`add${i}`}><span>{a[0]}<small>{k(a[1])} / jari</small></span><span class="step"><button type="button" data-a={i} data-d="-1" aria-label={`Kurangi ${a[0]}`}>−</button><output id={`ao${i}`}>0</output><button type="button" data-a={i} data-d="1" aria-label={`Tambah ${a[0]}`}>+</button></span></div>
+        <div><h3>1 · {T("Dasar kuku")}</h3><div class="chips" id="bases">{BASES.map((b, i) => <button type="button" data-i={i}>{T(b[0])}<small>{k(b[1])}</small></button>)}</div>
+          <div class="fingers">{T("Jumlah jari")} <span class="step"><button type="button" id="fMinus" aria-label={T("Kurangi jari")}>−</button><output id="fingers">10</output><button type="button" id="fPlus" aria-label={T("Tambah jari")}>+</button></span></div></div>
+        <div><h3>2 · {T("Desain & hiasan (per jari)")}</h3><div class="adds" id="adds">{ADDS.map((a, i) => (
+          <div class="add" id={`add${i}`}><span>{T(a[0])}<small>{k(a[1])} / {T("jari")}</small></span><span class="step"><button type="button" data-a={i} data-d="-1" aria-label={`${T("Kurangi")} ${T(a[0])}`}>−</button><output id={`ao${i}`}>0</output><button type="button" data-a={i} data-d="1" aria-label={`${T("Tambah")} ${T(a[0])}`}>+</button></span></div>
         ))}</div></div>
-        <div><h3>3 · Lepas kuku lama?</h3><div class="chips" id="removes">{REMOVES.map((r, i) => <button type="button" data-i={i}>{r[0]}{r[1] > 0 && <small>{k(r[1])}/jari</small>}</button>)}</div></div>
+        <div><h3>3 · {T("Lepas kuku lama?")}</h3><div class="chips" id="removes">{REMOVES.map((r, i) => <button type="button" data-i={i}>{T(r[0])}{r[1] > 0 && <small>{k(r[1])}/{T("jari")}</small>}</button>)}</div></div>
       </div>
       <div class="nota-wrap rv">
         <div class="nota" aria-live="polite">
-          <div class="nh"><b>NOTA NAILS</b><span>Early Beauty Studio · estimasi</span></div>
+          <div class="nh"><b>{T("NOTA NAILS")}</b><span>Early Beauty Studio · {T("estimasi")}</span></div>
           <div id="lines"></div>
           <div class="tot"><span>TOTAL</span><span id="total">Rp 0</span></div>
           <div class="when">
-            <label for="date">Tanggal<input type="date" id="date" /></label>
-            <label for="time">Jam<select id="time">{TIMES.map(t => <option>{t}</option>)}</select></label>
+            <label for="date">{T("Tanggal")}<input type="date" id="date" /></label>
+            <label for="time">{T("Jam")}<select id="time">{TIMES.map(t => <option>{t}</option>)}</select></label>
           </div>
-          <a class="btn dark send" id="send" target="_blank" rel="noopener">Kirim nota ke WhatsApp</a>
-          <div class="fine">Harga akhir dikonfirmasi studio lewat WA.</div>
+          <a class="btn dark send" id="send" target="_blank" rel="noopener">{T("Kirim nota ke WhatsApp")}</a>
+          <div class="fine">{T("Harga akhir dikonfirmasi studio lewat WA.")}</div>
         </div>
       </div>
     </div>
@@ -67,6 +69,8 @@ const k = n => n / 1000 + "rb";
 <script>
   import { BASES, ADDS, REMOVES, rp, waLink, longDate } from "../data/site.js";
   import { holyDays, DAY } from "../lib/bali.js";
+  import { tr, pageLang } from "../i18n/index.js";
+  const lang = pageLang(), T = s => tr(lang, s);
   const $ = id => document.getElementById(id);
   // starts as an example set so the receipt is never empty
   const st = { base: 2, fingers: 10, adds: ADDS.map(a => a[0] === "Cat Eye" ? 10 : a[0] === "3D Flowers" ? 2 : 0), remove: 0 };
@@ -84,9 +88,9 @@ const k = n => n / 1000 + "rb";
 
   function render() {
     const f = st.fingers, lines = [];
-    lines.push([`${BASES[st.base][0]} ${BASES[st.base][1] / 1000}rb × ${f}`, BASES[st.base][1] * f]);
-    st.adds.forEach((c, i) => { if (c) lines.push([`${ADDS[i][0]} ${ADDS[i][1] / 1000}rb × ${c}`, ADDS[i][1] * c]); });
-    if (st.remove) lines.push([`Remove ${REMOVES[st.remove][0]} × ${f}`, REMOVES[st.remove][1] * f]);
+    lines.push([`${T(BASES[st.base][0])} ${BASES[st.base][1] / 1000}${T("rb")} × ${f}`, BASES[st.base][1] * f]);
+    st.adds.forEach((c, i) => { if (c) lines.push([`${T(ADDS[i][0])} ${ADDS[i][1] / 1000}${T("rb")} × ${c}`, ADDS[i][1] * c]); });
+    if (st.remove) lines.push([`Remove ${T(REMOVES[st.remove][0])} × ${f}`, REMOVES[st.remove][1] * f]);
     const total = lines.reduce((s, l) => s + l[1], 0);
     $("lines").innerHTML = lines.map(l => `<div class="ln"><span>${l[0]}</span><span>${l[1].toLocaleString("id-ID")}</span></div>`).join("");
     $("fingers").textContent = f;
@@ -95,8 +99,8 @@ const k = n => n / 1000 + "rb";
     st.adds.forEach((c, i) => { $("ao" + i).textContent = c; $("add" + i).classList.toggle("on", c > 0); });
     countTo(total);
     if ($("date").value && $("date").value < $("date").min) $("date").value = $("date").min;
-    const d = $("date").value ? longDate(Date.parse($("date").value + "T00:00:00Z")) : "-";
-    $("send").href = waLink(`Halo kak Early Beauty, saya mau booking nails:\n${lines.map(l => "- " + l[0] + " = " + l[1].toLocaleString("id-ID")).join("\n")}\nEstimasi total: ${rp(total)}\nTanggal: ${d}\nJam: ${$("time").value} WITA\nApakah slotnya masih ada?`);
+    const d = $("date").value ? longDate(Date.parse($("date").value + "T00:00:00Z"), lang) : "-";
+    $("send").href = waLink(`${T("Halo kak Early Beauty, saya mau booking nails:")}\n${lines.map(l => "- " + l[0] + " = " + l[1].toLocaleString("id-ID")).join("\n")}\n${T("Estimasi total")}: ${rp(total)}\n${T("Tanggal")}: ${d}\n${T("Jam")}: ${$("time").value} WITA\n${T("Apakah slotnya masih ada?")}`);
   }
 
   $("bases").addEventListener("click", e => { const b = e.target.closest("button"); if (b) { st.base = +b.dataset.i; render(); } });

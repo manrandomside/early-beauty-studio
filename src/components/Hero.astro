@@ -1,8 +1,10 @@
 ---
+import { langOf, tr, link } from "../i18n/index.js";
+const lang = langOf(Astro.url), T = s => tr(lang, s);
 import { Image } from "astro:assets";
 import logoDark from "../assets/logo-dark.jpg";
 import { photo } from "../data/photos.js";
-const WORDS = ["ujung kuku.", "helai bulu mata.", "lengkung alis."];
+const WORDS = ["ujung kuku.", "helai bulu mata.", "lengkung alis."].map(T);
 // one photo per word, in the same order; brow photos are before/after, so show the lower "after" half
 const SHOTS = [["n1", "50% 50%"], ["e1", "50% 45%"], ["b4", "50% 85%"]];
 ---
@@ -18,9 +20,9 @@ const SHOTS = [["n1", "50% 50%"], ["e1", "50% 45%"], ["b4", "50% 85%"]];
     <div class="hero-frame">
       <span class="hc tl"></span><span class="hc tr"></span><span class="hc bl"></span><span class="hc br"></span>
       <div class="hf-top fade" style="animation-delay:2.1s">Eyelash · Nails · Brow</div>
-      <h1><span class="l"><span>Cantik sampai ke</span></span><span class="l"><span class="rot" id="rot">{WORDS.map((w, i) => <em class:list={["w", { on: i === 0 }]} aria-hidden={i > 0 ? "true" : undefined}>{w}</em>)}</span></span></h1>
+      <h1><span class="l"><span>{T("Cantik sampai ke")}</span></span><span class="l"><span class="rot" id="rot">{WORDS.map((w, i) => <em class:list={["w", { on: i === 0 }]} aria-hidden={i > 0 ? "true" : undefined}>{w}</em>)}</span></span></h1>
       <div class="hf-rule fade" style="animation-delay:2.3s"></div>
-      <div class="hf-links fade" style="animation-delay:2.4s"><a href="/harga/#nails">Hitung harga nails</a><a href="/harga/#lash">Pilih gaya bulu mata</a></div>
+      <div class="hf-links fade" style="animation-delay:2.4s"><a href={link(lang, "/harga/#nails")}>{T("Hitung harga nails")}</a><a href={link(lang, "/harga/#lash")}>{T("Pilih gaya bulu mata")}</a></div>
     </div>
   </div>
 </header>

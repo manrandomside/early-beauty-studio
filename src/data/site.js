@@ -74,6 +74,6 @@ export const COURSES = [
 
 export const rp = n => "Rp " + n.toLocaleString("id-ID");
 // dates are UTC midnights of a Bali calendar day, so format them in UTC
-export const formatDate = (t, o) => new Date(t).toLocaleDateString("id-ID", { timeZone: "UTC", day: "numeric", month: "long", ...o });
-export const longDate = t => formatDate(t, { weekday: "long", year: "numeric" });
+export const formatDate = (t, o, lang = "id") => new Date(t).toLocaleDateString(lang === "en" ? "en-GB" : "id-ID", { timeZone: "UTC", day: "numeric", month: "long", ...o });
+export const longDate = (t, lang) => formatDate(t, { weekday: "long", year: "numeric" }, lang);
 export const waLink = text => "https://wa.me/" + WA + "?text=" + encodeURIComponent(text);

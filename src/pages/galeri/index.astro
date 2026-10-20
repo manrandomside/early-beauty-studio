@@ -1,4 +1,6 @@
 ---
+import { langOf, tr } from "../../i18n/index.js";
+const T = s => tr(langOf(Astro.url), s);
 import Base from "../../layouts/Base.astro";
 import PageHead from "../../components/PageHead.astro";
 import Gallery from "../../components/Gallery.astro";
@@ -7,7 +9,7 @@ import Footer from "../../components/Footer.astro";
 import Booking from "../../components/Booking.astro";
 ---
 <Base path="/galeri/" title="Galeri hasil kerja · Early Beauty Studio Negara" description="Foto hasil eyelash extension, nail art dan alis di Early Beauty Studio, Negara, serta postingan terbaru dari Instagram @earlybeauty.studio.">
-  <PageHead path="/galeri/" eyebrow="Galeri" title="Lihat dulu," accent="baru booking." lead="Ketuk foto untuk melihat kisaran harga, atau lihat postingan terbaru dari Instagram." />
+  <PageHead eyebrow={T("Galeri")} title={T("Lihat dulu,")} accent={T("baru booking.")} lead={T("Ketuk foto untuk melihat kisaran harga, atau lihat postingan terbaru dari Instagram.")} />
   <main>
     <Gallery />
     <InstaFeed />

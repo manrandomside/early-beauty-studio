@@ -1,16 +1,18 @@
 ---
+import { langOf, tr, link } from "../i18n/index.js";
+const lang = langOf(Astro.url), T = s => tr(lang, s);
 import { SERVICES, TIMES } from "../data/site.js";
 ---
-<div class="dock" id="dock"><a class="btn line" href="/harga/#nails">Hitung nails</a><button type="button" class="btn dark" data-sheet>Booking</button></div>
+<div class="dock" id="dock"><a class="btn line" href={link(lang, "/harga/#nails")}>{T("Hitung nails")}</a><button type="button" class="btn dark" data-sheet>Booking</button></div>
 
 <div class="sheet-bg" id="sheetBg"></div>
 <div class="sheet" id="sheet" data-lenis-prevent role="dialog" aria-modal="true" aria-labelledby="sheetTitle" aria-hidden="true" inert>
   <div class="grab"></div>
-  <div class="sheet-top"><h3 id="sheetTitle">Booking</h3><button type="button" id="sheetClose" aria-label="Tutup">×</button></div>
-  <p class="lead">Pilih layanan dan waktu yang kamu mau. Pesan WhatsApp-nya kami siapkan.</p>
-  <div class="chips" id="svc">{SERVICES.map((s, i) => <button type="button" style={`--i:${i}`} data-s={s}>{s}</button>)}</div>
-  <div class="when2"><label for="date2">Tanggal<input type="date" id="date2" /></label><label for="time2">Jam<select id="time2">{TIMES.map(t => <option>{t}</option>)}</select></label></div>
-  <a class="btn dark" id="sheetSend" target="_blank" rel="noopener">Kirim ke WhatsApp</a>
+  <div class="sheet-top"><h3 id="sheetTitle">Booking</h3><button type="button" id="sheetClose" aria-label={T("Tutup")}>×</button></div>
+  <p class="lead">{T("Pilih layanan dan waktu yang kamu mau. Pesan WhatsApp-nya kami siapkan.")}</p>
+  <div class="chips" id="svc">{SERVICES.map((s, i) => <button type="button" style={`--i:${i}`} data-s={s}>{T(s)}</button>)}</div>
+  <div class="when2"><label for="date2">{T("Tanggal")}<input type="date" id="date2" /></label><label for="time2">{T("Jam")}<select id="time2">{TIMES.map(t => <option>{t}</option>)}</select></label></div>
+  <a class="btn dark" id="sheetSend" target="_blank" rel="noopener">{T("Kirim ke WhatsApp")}</a>
 </div>
 
 <style is:global>
@@ -43,6 +45,8 @@ import { SERVICES, TIMES } from "../data/site.js";
 <script>
   import { waLink, longDate } from "../data/site.js";
   import { holyDays, DAY } from "../lib/bali.js";
+  import { tr, pageLang } from "../i18n/index.js";
+  const lang = pageLang(), T = s => tr(lang, s);
 
   const $ = id => document.getElementById(id);
   const sheet = $("sheet"), bg = $("sheetBg"), chosen = new Set(["Eyelash Extension"]);
@@ -54,8 +58,8 @@ import { SERVICES, TIMES } from "../data/site.js";
   function render() {
     $("svc").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(chosen.has(b.dataset.s))));
     if ($("date2").value && $("date2").value < $("date2").min) $("date2").value = $("date2").min;
-    const d = $("date2").value ? longDate(Date.parse($("date2").value + "T00:00:00Z")) : "-";
-    $("sheetSend").href = waLink(`Halo kak Early Beauty, saya mau booking:\n- Layanan: ${[...chosen].join(", ") || "-"}\n- Tanggal: ${d}\n- Jam: ${$("time2").value} WITA\nApakah slotnya masih ada?`);
+    const d = $("date2").value ? longDate(Date.parse($("date2").value + "T00:00:00Z"), lang) : "-";
+    $("sheetSend").href = waLink(`${T("Halo kak Early Beauty, saya mau booking:")}\n- ${T("Layanan")}: ${[...chosen].map(T).join(", ") || "-"}\n- ${T("Tanggal")}: ${d}\n- ${T("Jam")}: ${$("time2").value} WITA\n${T("Apakah slotnya masih ada?")}`);
   }
   $("svc").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; chosen.has(b.dataset.s) ? chosen.delete(b.dataset.s) : chosen.add(b.dataset.s); render(); });
   $("date2").onchange = $("time2").onchange = render;

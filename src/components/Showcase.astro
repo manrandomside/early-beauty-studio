@@ -1,4 +1,6 @@
 ---
+import { langOf, tr } from "../i18n/index.js";
+const lang = langOf(Astro.url), T = s => tr(lang, s);
 import { Image } from "astro:assets";
 import { WORKS } from "../data/site.js";
 import { photo } from "../data/photos.js";
@@ -6,10 +8,10 @@ import { photo } from "../data/photos.js";
 <section class="works" id="karya">
   <div class="works-pin" id="worksPin">
     <div class="works-sticky">
-      <div class="in"><div class="s-head rv" style="margin-bottom:30px"><span class="eyebrow">Early Beauty Studio · Banyubiru, Negara</span><h2>Masuk dulu, <em>lihat-lihat sebentar.</em></h2></div></div>
+      <div class="in"><div class="s-head rv" style="margin-bottom:30px"><span class="eyebrow">Early Beauty Studio · Banyubiru, Negara</span><h2>{T("Masuk dulu,")} <em>{T("lihat-lihat sebentar.")}</em></h2></div></div>
       <div class="works-track" id="worksTrack">
         {WORKS.map(([label, key]) => (
-          <figure class="work"><div class="img"><Image src={photo(key)} widths={[360, 660]} sizes="330px" alt={`${label} di Early Beauty Studio`} /></div><figcaption>{label}</figcaption></figure>
+          <figure class="work"><div class="img"><Image src={photo(key)} widths={[360, 660]} sizes="330px" alt={`${T(label)} · Early Beauty Studio`} /></div><figcaption>{T(label)}</figcaption></figure>
         ))}
       </div>
       <div class="in"><div class="works-bar"><i id="worksBar"></i></div></div>

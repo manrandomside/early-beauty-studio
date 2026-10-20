@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- one entry per page; add new pages here -->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://earlybeauty.pages.dev/</loc></url>
-  <url><loc>https://earlybeauty.pages.dev/harga/</loc></url>
-  <url><loc>https://earlybeauty.pages.dev/galeri/</loc></url>
-  <url><loc>https://earlybeauty.pages.dev/kelas/</loc></url>
-  <url><loc>https://earlybeauty.pages.dev/kunjungi/</loc></url>
+<!-- every page in Indonesian (/) and English (/en/); add new pages in both -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://earlybeauty.pages.dev/</loc><xhtml:link rel="alternate" hreflang="id" href="https://earlybeauty.pages.dev/" /><xhtml:link rel="alternate" hreflang="en" href="https://earlybeauty.pages.dev/en/" /></url>
+  <url><loc>https://earlybeauty.pages.dev/en/</loc><xhtml:link rel="alternate" hreflang="id" href="https://earlybeauty.pages.dev/" /><xhtml:link rel="alternate" hreflang="en" href="https://earlybeauty.pages.dev/en/" /></url>
+  <url><loc>https://earlybeauty.pages.dev/harga/</loc><xhtml:link rel="alternate" hreflang="id" href="https://earlybeauty.pages.dev/harga/" /><xhtml:link rel="alternate" hreflang="en" href="https://earlybeauty.pages.dev/en/harga/" /></url>
+  <url><loc>https://earlybeauty.pages.dev/en/harga/</loc><xhtml:link rel="alternate" hreflang="id" href="https://earlybeauty.pages.dev/harga/" /><xhtml:link rel="alternate" hreflang="en" href="https://earlybeauty.pages.dev/en/harga/" /></url>
+  <url><loc>https://earlybeauty.pages.dev/galeri/</loc><xhtml:link rel="alternate" hreflang="id" href="https://earlybeauty.pages.dev/galeri/" /><xhtml:link rel="alternate" hreflang="en" href="https://earlybeauty.pages.dev/en/galeri/" /></url>
+  <url><loc>https://earlybeauty.pages.dev/en/galeri/</loc><xhtml:link rel="alternate" hreflang="id" href="https://earlybeauty.pages.dev/galeri/" /><xhtml:link rel="alternate" hreflang="en" href="https://earlybeauty.pages.dev/en/galeri/" /></url>
+  <url><loc>https://earlybeauty.pages.dev/kelas/</loc><xhtml:link rel="alternate" hreflang="id" href="https://earlybeauty.pages.dev/kelas/" /><xhtml:link rel="alternate" hreflang="en" href="https://earlybeauty.pages.dev/en/kelas/" /></url>
+  <url><loc>https://earlybeauty.pages.dev/en/kelas/</loc><xhtml:link rel="alternate" hreflang="id" href="https://earlybeauty.pages.dev/kelas/" /><xhtml:link rel="alternate" hreflang="en" href="https://earlybeauty.pages.dev/en/kelas/" /></url>
+  <url><loc>https://earlybeauty.pages.dev/kunjungi/</loc><xhtml:link rel="alternate" hreflang="id" href="https://earlybeauty.pages.dev/kunjungi/" /><xhtml:link rel="alternate" hreflang="en" href="https://earlybeauty.pages.dev/en/kunjungi/" /></url>
+  <url><loc>https://earlybeauty.pages.dev/en/kunjungi/</loc><xhtml:link rel="alternate" hreflang="id" href="https://earlybeauty.pages.dev/kunjungi/" /><xhtml:link rel="alternate" hreflang="en" href="https://earlybeauty.pages.dev/en/kunjungi/" /></url>
 </urlset>

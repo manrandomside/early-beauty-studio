@@ -4,15 +4,19 @@ import "../styles/global.css";
 import Announce from "../components/Announce.astro";
 import Nav from "../components/Nav.astro";
 import { ADDRESS, WA, IG } from "../data/site.js";
+import { langOf, tr, link } from "../i18n/index.js";
 
-// each page passes its own title, description and path; the home page uses the defaults
+// each page passes its own title, description and path (the Indonesian one, e.g. "/harga/"); the home page uses the defaults
+const lang = langOf(Astro.url), T = s => tr(lang, s);
 const {
   title = "Early Beauty Studio · Eyelash, Nails & Alis di Negara, Jembrana",
   description = "Studio eyelash extension, nail art, lash lift dan alis di Banyubiru, Negara, Jembrana. Cek harga, hitung harga nails, lalu booking lewat WhatsApp. Buka setiap hari 10.00–17.00 WITA.",
   path = "/",
   admin = false // the admin page is kept out of search and shows no announcement bar
 } = Astro.props;
-const url = new URL(path, Astro.site);
+const url = new URL(link(lang, path), Astro.site);
+// search engines are told about both language versions of every page
+const alt = { id: new URL(path, Astro.site), en: new URL(link("en", path), Astro.site) };
 
 // tells Google this is a local beauty salon, with hours and location
 const business = {
@@ -27,20 +31,23 @@ const business = {
 };
 ---
 <!doctype html>
-<html lang="id">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
+    <title>{T(title)}</title>
+    <meta name="description" content={T(description)} />
     <link rel="canonical" href={url} />
+    {!admin && <link rel="alternate" hreflang="id" href={alt.id} />}
+    {!admin && <link rel="alternate" hreflang="en" href={alt.en} />}
+    {!admin && <link rel="alternate" hreflang="x-default" href={alt.id} />}
     <!-- link preview when the site is shared on WhatsApp, Instagram or Facebook -->
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={T(title)} />
+    <meta property="og:description" content={T(description)} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={url} />
     <meta property="og:site_name" content="Early Beauty Studio" />
-    <meta property="og:locale" content="id_ID" />
+    <meta property="og:locale" content={lang === "en" ? "en_GB" : "id_ID"} />
     <meta property="og:image" content={new URL("/og.jpg", Astro.site)} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />

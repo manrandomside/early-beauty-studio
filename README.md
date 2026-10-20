@@ -29,7 +29,15 @@ Website ini statis. Satu-satunya bagian dinamis adalah **pengumuman** di bagian 
 | `/kunjungi/` | Peta dengan titik lokasi studio, jam buka, dan ulasan |
 | `/admin/` | Halaman pemilik untuk mengatur pengumuman (tidak muncul di Google) |
 
-Di HP, tombol **Menu** membuka daftar halaman, dan bar di bawah layar berisi tombol hitung nails dan booking.
+Menu di bagian atas selalu menempel saat di-scroll, dengan link **Beranda** dan tombol **ID / EN**. Di HP, tombol **Menu** membuka daftar halaman, dan bar di bawah layar berisi tombol hitung nails dan booking.
+
+## Dua bahasa
+
+Bahasa Indonesia ada di `/`, bahasa Inggris di `/en/` (misalnya `/en/harga/`). Halaman Inggris memakai halaman yang sama; setiap komponen membaca bahasanya dari alamat URL.
+
+- Teks ditulis dalam bahasa Indonesia di komponen, lalu diterjemahkan lewat kamus [`src/i18n/en.js`](src/i18n/en.js) (kunci = teks Indonesia, nilai = teks Inggris).
+- Saat menambah atau mengubah teks, tambahkan juga terjemahannya di kamus. Tes `npm test` gagal kalau ada teks dari `site.js` yang belum punya terjemahan.
+- Pesan WhatsApp dari halaman Inggris ikut berbahasa Inggris. Admin dan pengumuman tetap satu bahasa, sesuai yang ditulis pemilik.
 
 ## Fitur
 

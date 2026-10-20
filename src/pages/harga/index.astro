@@ -1,4 +1,6 @@
 ---
+import { langOf, tr } from "../../i18n/index.js";
+const T = s => tr(langOf(Astro.url), s);
 import Base from "../../layouts/Base.astro";
 import PageHead from "../../components/PageHead.astro";
 import LashScale from "../../components/LashScale.astro";
@@ -9,7 +11,7 @@ import Footer from "../../components/Footer.astro";
 import Booking from "../../components/Booking.astro";
 ---
 <Base path="/harga/" title="Harga eyelash, nails & alis · Early Beauty Studio Negara" description="Daftar harga eyelash extension, nail art per jari, lash lift dan alis di Early Beauty Studio, Negara. Hitung harga nails sendiri lalu kirim notanya ke WhatsApp.">
-  <PageHead path="/harga/" eyebrow="Harga & layanan" title="Tahu harganya" accent="sebelum datang." lead="Pilih gaya bulu mata, hitung harga nails per jari, dan lihat harga lash lift serta alis." />
+  <PageHead eyebrow={T("Harga & layanan")} title={T("Tahu harganya")} accent={T("sebelum datang.")} lead={T("Pilih gaya bulu mata, hitung harga nails per jari, dan lihat harga lash lift serta alis.")} />
   <PriceTabs />
   <main>
     <LashScale />

@@ -1,4 +1,6 @@
 ---
+import { langOf, tr } from "../i18n/index.js";
+const lang = langOf(Astro.url), T = s => tr(lang, s);
 import { Image, getImage } from "astro:assets";
 import { GALLERY, CATS } from "../data/site.js";
 import { photo } from "../data/photos.js";
@@ -8,20 +10,20 @@ const full = Object.fromEntries(await Promise.all(GALLERY.map(async ([, key]) =>
 ---
 <section class="s" id="galeri">
   <div class="in">
-    <div class="s-head rv"><span class="eyebrow">Galeri · ketuk foto untuk detail</span><h2>Hasil kerja, <em>per layanan.</em></h2><p class="lead">Semua hasil kerja Early Beauty per layanan. Ketuk satu foto untuk melihat kisaran harga dan langsung booking dengan foto itu sebagai contoh.</p></div>
-    <div class="filters" id="filters" role="group" aria-label="Filter galeri">
-      {CATS.map(c => <button type="button" data-c={c} aria-pressed={String(c === "Semua")}>{c}<small>{c === "Semua" ? GALLERY.length : GALLERY.filter(g => g[0] === c).length}</small></button>)}
+    <div class="s-head rv"><span class="eyebrow">{T("Galeri · ketuk foto untuk detail")}</span><h2>{T("Hasil kerja,")} <em>{T("per layanan.")}</em></h2><p class="lead">{T("Semua hasil kerja Early Beauty per layanan. Ketuk satu foto untuk melihat kisaran harga dan langsung booking dengan foto itu sebagai contoh.")}</p></div>
+    <div class="filters" id="filters" role="group" aria-label={T("Filter galeri")}>
+      {CATS.map(c => <button type="button" data-c={c} aria-pressed={String(c === "Semua")}>{T(c)}<small>{c === "Semua" ? GALLERY.length : GALLERY.filter(g => g[0] === c).length}</small></button>)}
     </div>
     <div class="grid-g" id="gallery">
       {GALLERY.map(([cat, key], i) => (
-        <button type="button" class="tile" data-i={i} data-full={full[key]} aria-label={`Foto ${cat}, lihat detail`}><Image src={photo(key)} widths={[240, 480]} sizes="(max-width: 680px) 46vw, 260px" alt={`Hasil ${cat} di Early Beauty Studio`} /><span>{cat}</span></button>
+        <button type="button" class="tile" data-i={i} data-full={full[key]} aria-label={`${T("Foto")} ${T(cat)}, ${T("lihat detail")}`}><Image src={photo(key)} widths={[240, 480]} sizes="(max-width: 680px) 46vw, 260px" alt={`${T(cat)} · Early Beauty Studio`} /><span>{T(cat)}</span></button>
       ))}
     </div>
   </div>
 </section>
 
 <dialog class="lb" id="lb" data-lenis-prevent aria-labelledby="lbName">
-  <button type="button" class="lb-close" id="lbClose" aria-label="Tutup detail">×</button>
+  <button type="button" class="lb-close" id="lbClose" aria-label={T("Tutup detail")}>×</button>
   <div class="lb-in">
     <div class="lb-img"><img id="lbImg" src={full[GALLERY[0][1]]} alt="" /></div>
     <div class="lb-info">
@@ -29,14 +31,14 @@ const full = Object.fromEntries(await Promise.all(GALLERY.map(async ([, key]) =>
       <h3 id="lbName"></h3>
       <div class="lb-price" id="lbPrice"></div>
       <p class="lb-note" id="lbNote"></p>
-      <div class="lb-acts"><a class="btn dark" id="lbBook" target="_blank" rel="noopener">Booking seperti foto ini</a><button type="button" class="btn line" id="lbCalc" hidden>Hitung harga di nota nails</button></div>
-      <div class="lb-nav"><button type="button" id="lbPrev" aria-label="Foto sebelumnya">←</button><span id="lbCount"></span><button type="button" id="lbNext" aria-label="Foto berikutnya">→</button></div>
+      <div class="lb-acts"><a class="btn dark" id="lbBook" target="_blank" rel="noopener">{T("Booking seperti foto ini")}</a><button type="button" class="btn line" id="lbCalc" hidden>{T("Hitung harga di nota nails")}</button></div>
+      <div class="lb-nav"><button type="button" id="lbPrev" aria-label={T("Foto sebelumnya")}>←</button><span id="lbCount"></span><button type="button" id="lbNext" aria-label={T("Foto berikutnya")}>→</button></div>
     </div>
   </div>
 </dialog>
 
 <style is:global>
-  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; padding-block: 10px; background: var(--porcelain); }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; position: sticky; top: var(--nav-h); z-index: 5; padding-block: 10px; background: var(--porcelain); }
   .filters button { border: 1px solid var(--line); background: #fff; padding: 8px 15px; border-radius: 99px; font-size: 14px; transition: background .25s, color .25s, border-color .25s; }
   .filters button small { opacity: .6; margin-left: 6px; font-variant-numeric: tabular-nums; }
   .filters button[aria-pressed="true"] { background: var(--plum); border-color: var(--plum); color: #f4e9e6; }
@@ -73,6 +75,8 @@ const full = Object.fromEntries(await Promise.all(GALLERY.map(async ([, key]) =>
 <script>
   import { GALLERY, LASH, waLink } from "../data/site.js";
   import { REDUCE } from "../scripts/motion.js";
+  import { tr, pageLang, link } from "../i18n/index.js";
+  const lang = pageLang(), T = s => tr(lang, s);
 
   const $ = id => document.getElementById(id);
   const tiles = [...$("gallery").children], lb = $("lb");
@@ -92,19 +96,19 @@ const full = Object.fromEntries(await Promise.all(GALLERY.map(async ([, key]) =>
 
   // what each service is called and what it costs, straight from the price lists
   const DETAIL = {
-    Eyelash: ["Eyelash Extension", "mulai Rp 60.000", `${LASH.length} gaya, dari Natural Classic (60K) sampai Volume Anime Lash (90K). Gaya yang pas ditentukan saat konsultasi di studio.`],
-    Nails: ["Nail Art", "mulai Rp 4.000 / jari", "Harga tergantung dasar kuku dan desainnya. Hitung estimasinya sendiri di nota nails."],
-    Alis: ["Alis", "Rp 40.000 – 80.000", "Threading 40K, Brow Lamination 70K, Brow Bomber 80K. Foto atas sebelum, bawah sesudah."]
+    Eyelash: ["Eyelash Extension", T("mulai Rp 60.000"), `${LASH.length} ${T("gaya, dari Natural Classic (60K) sampai Volume Anime Lash (90K). Gaya yang pas ditentukan saat konsultasi di studio.")}`],
+    Nails: ["Nail Art", T("mulai Rp 4.000 / jari"), T("Harga tergantung dasar kuku dan desainnya. Hitung estimasinya sendiri di nota nails.")],
+    Alis: [T("Alis"), "Rp 40.000 – 80.000", T("Threading 40K, Brow Lamination 70K, Brow Bomber 80K. Foto atas sebelum, bawah sesudah.")]
   };
 
   function show(pos) {
     cur = (pos + shown.length) % shown.length;
     const [cat] = GALLERY[shown[cur]], [name, price, note] = DETAIL[cat];
     const nth = shown.filter(i => GALLERY[i][0] === cat).indexOf(shown[cur]) + 1;
-    $("lbImg").src = tiles[shown[cur]].dataset.full; $("lbImg").alt = `Hasil ${name} di Early Beauty Studio`;
-    $("lbCat").textContent = `Galeri ${cat}`; $("lbName").textContent = name; $("lbPrice").textContent = price; $("lbNote").textContent = note;
+    $("lbImg").src = tiles[shown[cur]].dataset.full; $("lbImg").alt = `${name} · Early Beauty Studio`;
+    $("lbCat").textContent = `${T("Galeri")} ${T(cat)}`; $("lbName").textContent = name; $("lbPrice").textContent = price; $("lbNote").textContent = note;
     $("lbCount").textContent = `${cur + 1} / ${shown.length}`;
-    $("lbBook").href = waLink(`Halo kak Early Beauty, saya mau booking ${name} seperti foto ke-${nth} di galeri ${cat} website. Apakah ada slot kosong?`);
+    $("lbBook").href = waLink(lang === "en" ? `Hi Early Beauty, I would like to book ${name} like photo no. ${nth} in the ${cat} gallery on your website. Is there a free slot?` : `Halo kak Early Beauty, saya mau booking ${name} seperti foto ke-${nth} di galeri ${cat} website. Apakah ada slot kosong?`);
     $("lbCalc").hidden = cat !== "Nails";
   }
 
@@ -114,5 +118,5 @@ const full = Object.fromEntries(await Promise.all(GALLERY.map(async ([, key]) =>
   $("lbClose").onclick = () => lb.close();
   lb.addEventListener("click", e => { if (e.target === lb) lb.close(); });
   lb.addEventListener("keydown", e => { if (e.key === "ArrowLeft") show(cur - 1); if (e.key === "ArrowRight") show(cur + 1); });
-  $("lbCalc").onclick = () => { location.href = "/harga/#nails"; };
+  $("lbCalc").onclick = () => { location.href = link(lang, "/harga/#nails"); };
 </script>

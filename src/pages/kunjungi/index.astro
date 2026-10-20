@@ -1,4 +1,6 @@
 ---
+import { langOf, tr } from "../../i18n/index.js";
+const T = s => tr(langOf(Astro.url), s);
 import Base from "../../layouts/Base.astro";
 import PageHead from "../../components/PageHead.astro";
 import Visit from "../../components/Visit.astro";
@@ -7,7 +9,7 @@ import Footer from "../../components/Footer.astro";
 import Booking from "../../components/Booking.astro";
 ---
 <Base path="/kunjungi/" title="Lokasi & jam buka · Early Beauty Studio Negara" description="Early Beauty Studio di Jl. Raya Negara–Gilimanuk, Banyubiru, Jembrana. Buka setiap hari 10.00–17.00 WITA. Lihat peta dan status buka.">
-  <PageHead path="/kunjungi/" eyebrow="Lokasi & jam buka" title="Mampir ke" accent="Banyubiru." lead="Buka setiap hari 10.00–17.00 WITA. Booking dulu lewat WhatsApp supaya tidak menunggu." />
+  <PageHead eyebrow={T("Lokasi & jam buka")} title={T("Mampir ke")} accent={T("Banyubiru.")} lead={T("Buka setiap hari 10.00–17.00 WITA. Booking dulu lewat WhatsApp supaya tidak menunggu.")} />
   <main>
     <Visit />
     <Reviews />

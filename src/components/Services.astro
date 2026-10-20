@@ -1,4 +1,6 @@
 ---
+import { langOf, tr, link } from "../i18n/index.js";
+const lang = langOf(Astro.url), T = s => tr(lang, s);
 import { Image } from "astro:assets";
 import { LASH, BASES, COURSES } from "../data/site.js";
 import { photo } from "../data/photos.js";
@@ -7,15 +9,15 @@ const k = n => Math.round(n / 1000) + "K";
 const min = list => Math.min(...list);
 // one door per need: each panel opens the page (or tab) that answers it; starting prices come from the price data
 const PANELS = [
-  ["Eyelash", `Mulai ${k(min(LASH.map(l => l[1])))}`, "7 gaya, dari natural sampai anime.", "Lihat gaya & harga", "/harga/#lash", "e1", "50% 45%"],
-  ["Nails", `Mulai ${k(min(BASES.map(b => b[1])))} per jari`, "Hitung sendiri, kirim notanya ke WhatsApp.", "Hitung harga nails", "/harga/#nails", "n1", "50% 50%"],
-  ["Alis", "40K–70K", "Lash lift, threading, dan brow lamination.", "Lihat harga alis", "/harga/#alis", "b4", "50% 85%"],
-  ["Kelas", `Mulai ${k(min(COURSES.map(c => c.price[0])))}`, `${COURSES.length} program, alatnya bisa dibawa pulang.`, "Lihat kelas", "/kelas/", "s1", "50% 50%"]
+  ["Eyelash", `${T("Mulai")} ${k(min(LASH.map(l => l[1])))}`, T("7 gaya, dari natural sampai anime."), T("Lihat gaya & harga"), link(lang, "/harga/#lash"), "e1", "50% 45%"],
+  ["Nails", `${T("Mulai")} ${k(min(BASES.map(b => b[1])))} ${T("per jari")}`, T("Hitung sendiri, kirim notanya ke WhatsApp."), T("Hitung harga nails"), link(lang, "/harga/#nails"), "n1", "50% 50%"],
+  [T("Alis"), "40K–70K", T("Lash lift, threading, dan brow lamination."), T("Lihat harga alis"), link(lang, "/harga/#alis"), "b4", "50% 85%"],
+  [T("Kelas"), `${T("Mulai")} ${k(min(COURSES.map(c => c.price[0])))}`, `${COURSES.length} ${T("program, alatnya bisa dibawa pulang.")}`, T("Lihat kelas"), link(lang, "/kelas/"), "s1", "50% 50%"]
 ];
 ---
 <section class="s doors">
   <div class="in">
-    <div class="s-head rv"><span class="eyebrow">Mau apa hari ini?</span><h2>Pilih layanannya, <em>sisanya kami bantu.</em></h2></div>
+    <div class="s-head rv"><span class="eyebrow">{T("Mau apa hari ini?")}</span><h2>{T("Pilih layanannya,")} <em>{T("sisanya kami bantu.")}</em></h2></div>
     <div class="door-grid">
       {PANELS.map(([word, price, line, cta, href, key, pos]) => (
         <a class="door rv" href={href}>

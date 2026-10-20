@@ -1,4 +1,6 @@
 ---
+import { langOf, tr } from "../i18n/index.js";
+const lang = langOf(Astro.url), T = s => tr(lang, s);
 import { ADDRESS, HOURS, WA_TEXT, IG, MAPS, GEO, GOOGLE } from "../data/site.js";
 // Google's plain embed needs no API key; the pin is the studio's coordinates
 const map = `https://maps.google.com/maps?q=${GEO.join(",")}&z=16&output=embed`;
@@ -6,17 +8,17 @@ const map = `https://maps.google.com/maps?q=${GEO.join(",")}&z=16&output=embed`;
 <section class="s visit-s" id="kunjungi">
   <div class="in visit">
     <div class="map rv">
-      <iframe src={map} title="Peta lokasi Early Beauty Studio di Banyubiru, Negara" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <iframe src={map} title={T("Peta lokasi Early Beauty Studio di Banyubiru, Negara")} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
     <div class="rv">
-      <div class="s-head"><span class="eyebrow">Kunjungi studio</span><h2>Sampai jumpa <em>di Negara.</em></h2></div>
+      <div class="s-head"><span class="eyebrow">{T("Kunjungi studio")}</span><h2>{T("Sampai jumpa")} <em>{T("di Negara.")}</em></h2></div>
       <div class="facts">
-        <div class="row"><span>Alamat</span><span>{ADDRESS}</span></div>
-        <div class="row"><span>Jam buka</span><span>{HOURS}<small id="nowOpen"></small></span></div>
+        <div class="row"><span>{T("Alamat")}</span><span>{ADDRESS}</span></div>
+        <div class="row"><span>{T("Jam buka")}</span><span>{T(HOURS)}<small id="nowOpen"></small></span></div>
         <div class="row"><span>Booking</span><span>WhatsApp {WA_TEXT}</span></div>
-        <div class="row"><span>Google</span><span>{GOOGLE.rating} ★ dari {GOOGLE.count} ulasan</span></div>
+        <div class="row"><span>Google</span><span>{GOOGLE.rating} ★ {T("dari")} {GOOGLE.count} {T("ulasan")}</span></div>
       </div>
-      <p class="ctas visit-ctas"><a class="btn dark" href={MAPS} target="_blank" rel="noopener">Petunjuk arah</a><a class="btn" style="color:var(--plum)" href={IG} target="_blank" rel="noopener">Instagram</a></p>
+      <p class="ctas visit-ctas"><a class="btn dark" href={MAPS} target="_blank" rel="noopener">{T("Petunjuk arah")}</a><a class="btn" style="color:var(--plum)" href={IG} target="_blank" rel="noopener">Instagram</a></p>
     </div>
   </div>
 </section>
@@ -33,7 +35,8 @@ const map = `https://maps.google.com/maps?q=${GEO.join(",")}&z=16&output=embed`;
 
 <script>
   import { isOpen } from "../lib/bali.js";
+  import { tr, pageLang } from "../i18n/index.js";
 
   const $ = id => document.getElementById(id);
-  $("nowOpen").textContent = isOpen() ? "Sedang buka" : "Sedang tutup, buka lagi 10.00";
+  $("nowOpen").textContent = tr(pageLang(), isOpen() ? "Sedang buka" : "Sedang tutup, buka lagi 10.00");
 </script>

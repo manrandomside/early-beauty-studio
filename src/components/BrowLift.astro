@@ -1,10 +1,14 @@
+---
+import { langOf, tr } from "../i18n/index.js";
+const T = s => tr(langOf(Astro.url), s);
+---
 <section class="s" id="alis">
   <div class="in brow">
-    <div class="s-head rv"><span class="eyebrow">Lash lift &amp; alis</span><h2>Bingkai wajah, <em>tanpa ribet.</em></h2><p class="lead">Bulu mata asli dibuat lentik tanpa extension, dan alis dirapikan sampai fluffy.</p></div>
+    <div class="s-head rv"><span class="eyebrow">{T("Lash lift & alis")}</span><h2>{T("Bingkai wajah,")} <em>{T("tanpa ribet.")}</em></h2><p class="lead">{T("Bulu mata asli dibuat lentik tanpa extension, dan alis dirapikan sampai fluffy.")}</p></div>
     <div class="price-list rv">
       <div class="row"><span>Lash Lift</span><span>55K</span></div>
-      <div class="row"><span>Lash Lift + Tint<small>Lentik sekaligus lebih gelap</small></span><span>60K</span></div>
-      <div class="row"><span>Threading Alis</span><span>40K</span></div>
+      <div class="row"><span>Lash Lift + Tint<small>{T("Lentik sekaligus lebih gelap")}</small></span><span>60K</span></div>
+      <div class="row"><span>{T("Threading Alis")}</span><span>40K</span></div>
       <div class="row"><span>Brow Lamination</span><span>70K</span></div>
       <div class="row"><span>Brow Bomber</span><span>80K</span></div>
     </div>

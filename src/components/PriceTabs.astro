@@ -1,10 +1,12 @@
 ---
+import { langOf, tr, link } from "../i18n/index.js";
+const lang = langOf(Astro.url), T = s => tr(lang, s);
 // one service at a time on the price page; each tab is also a plain link, so without JS the page simply scrolls
-const TABS = [["lash", "Eyelash"], ["nails", "Nails"], ["alis", "Lash lift & alis"]];
+const TABS = [["lash", "Eyelash"], ["nails", "Nails"], ["alis", T("Lash lift & alis")]];
 ---
-<nav class="ptabs" aria-label="Pilih layanan">
+<nav class="ptabs" aria-label={T("Pilih layanan")}>
   <div class="in ptabs-row">
-    {TABS.map(([id, label], i) => <a href={`/harga/#${id}`} data-tab={id} aria-current={i === 0 ? "true" : undefined}>{label}</a>)}
+    {TABS.map(([id, label], i) => <a href={link(lang, `/harga/#${id}`)} data-tab={id} aria-current={i === 0 ? "true" : undefined}>{label}</a>)}
   </div>
 </nav>
 

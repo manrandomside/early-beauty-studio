@@ -1,18 +1,20 @@
 ---
+import { langOf, tr, link } from "../i18n/index.js";
+const lang = langOf(Astro.url), T = s => tr(lang, s);
 import { GOOGLE, REVIEWS, MAPS, IG, INSTA_STATS, COURSES } from "../data/site.js";
 // proof the studio is trusted, all from public numbers
 const PROOF = [
-  [GOOGLE.rating + " ★", `rating dari ${GOOGLE.count} ulasan Google`, MAPS],
-  [INSTA_STATS.posts, "hasil kerja dipajang di Instagram", IG],
-  [INSTA_STATS.followers, "pengikut Instagram yang mengikuti hasil kerjanya", IG],
-  [String(COURSES.length), "program kelas untuk yang ingin buka usaha sendiri", "/kelas/"]
+  [GOOGLE.rating + " ★", `${T("rating dari")} ${GOOGLE.count} ${T("ulasan Google")}`, MAPS],
+  [INSTA_STATS.posts, T("hasil kerja dipajang di Instagram"), IG],
+  [lang === "en" ? INSTA_STATS.followers.replace(".", ",") : INSTA_STATS.followers, T("pengikut Instagram yang mengikuti hasil kerjanya"), IG],
+  [String(COURSES.length), T("program kelas untuk yang ingin buka usaha sendiri"), link(lang, "/kelas/")]
 ];
 // the wall of quotes appears once REVIEWS has entries; until then the numbers and the ask show
 ---
 <section class="s reviews">
   <div class="in">
     <div class="rev-top rv">
-      <div class="s-head" style="margin:0"><span class="eyebrow">Kenapa Early Beauty</span><h2>Dipercaya di Negara, <em>dipajang tiap hari.</em></h2></div>
+      <div class="s-head" style="margin:0"><span class="eyebrow">{T("Kenapa Early Beauty")}</span><h2>{T("Dipercaya di Negara,")} <em>{T("dipajang tiap hari.")}</em></h2></div>
     </div>
     <div class="proof">
       {PROOF.map(([n, label, href]) => <a class="proof-item rv" href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noopener"><strong>{n}</strong><span>{label}</span></a>)}
@@ -22,7 +24,7 @@ const PROOF = [
         {REVIEWS.map(([name, text, source]) => <figure class="rev rv"><blockquote>“{text}”</blockquote><figcaption>{name} · {source}</figcaption></figure>)}
       </div>
     )}
-    <p class="rev-ask rv">Ulasanmu membantu orang lain di Negara menemukan studio ini. <a class="btn dark" href={MAPS} target="_blank" rel="noopener">Tulis ulasan di Google</a></p>
+    <p class="rev-ask rv">{T("Ulasanmu membantu orang lain di Negara menemukan studio ini.")} <a class="btn dark" href={MAPS} target="_blank" rel="noopener">{T("Tulis ulasan di Google")}</a></p>
   </div>
 </section>
 

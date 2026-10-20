@@ -1,4 +1,6 @@
 ---
+import { langOf, tr, link } from "../i18n/index.js";
+const lang = langOf(Astro.url), T = s => tr(lang, s);
 import { Image } from "astro:assets";
 import logoDark from "../assets/logo-dark.jpg";
 import logoMark from "../assets/logo-mark-light.png";
@@ -8,13 +10,13 @@ import { ADDRESS, HOURS, WA_TEXT, IG } from "../data/site.js";
   <Image class="foot-mark" src={logoDark} width={375} alt="" aria-hidden="true" />
   <div class="in foot-grid">
     <div class="foot-brand">
-      <a class="brand" href="/"><Image src={logoMark} width={84} alt="Logo Early Beauty Studio" />EARLY BEAUTY</a>
-      <p>Studio eyelash, nails, lash lift dan alis di Negara, Jembrana. Booking cukup lewat WhatsApp.</p>
+      <a class="brand" href={link(lang, "/")}><Image src={logoMark} width={84} alt="Logo Early Beauty Studio" />EARLY BEAUTY</a>
+      <p>{T("Studio eyelash, nails, lash lift dan alis di Negara, Jembrana. Booking cukup lewat WhatsApp.")}</p>
       <a href={IG} target="_blank" rel="noopener">Instagram @earlybeauty.studio</a>
     </div>
-    <div><h2 class="foot-h">Layanan</h2><a href="/harga/#lash">Eyelash Extension</a><a href="/harga/#nails">Nails</a><a href="/harga/#alis">Lash Lift &amp; Alis</a><a href="/kelas/">Kelas kecantikan</a></div>
-    <div><h2 class="foot-h">Jelajahi</h2><a href="/">Beranda</a><a href="/galeri/">Galeri</a><a href="/kunjungi/">Kunjungi studio</a><button type="button" data-sheet>Booking</button></div>
-    <div><h2 class="foot-h">Kunjungi</h2><p>{ADDRESS}</p><p>{HOURS}</p><p>WA {WA_TEXT}</p></div>
+    <div><h2 class="foot-h">{T("Layanan")}</h2><a href={link(lang, "/harga/#lash")}>Eyelash Extension</a><a href={link(lang, "/harga/#nails")}>Nails</a><a href={link(lang, "/harga/#alis")}>{T("Lash Lift & Alis")}</a><a href={link(lang, "/kelas/")}>{T("Kelas kecantikan")}</a></div>
+    <div><h2 class="foot-h">{T("Jelajahi")}</h2><a href={link(lang, "/")}>{T("Beranda")}</a><a href={link(lang, "/galeri/")}>{T("Galeri")}</a><a href={link(lang, "/kunjungi/")}>{T("Kunjungi studio")}</a><button type="button" data-sheet>Booking</button></div>
+    <div><h2 class="foot-h">{T("Kunjungi")}</h2><p>{ADDRESS}</p><p>{T(HOURS)}</p><p>WA {WA_TEXT}</p></div>
   </div>
   <div class="in"><div class="foot-bottom">© {new Date().getFullYear()} Early Beauty Studio · Negara, Jembrana, Bali</div></div>
 </footer>

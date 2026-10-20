@@ -1,7 +1,11 @@
+---
+import { langOf, tr } from "../i18n/index.js";
+const T = s => tr(langOf(Astro.url), s);
+---
 <!-- The owner's announcement from /admin, shown above every page while it is switched on and within its dates. -->
 <div class="announce" id="announce" role="status" hidden>
   <p id="announceText"></p>
-  <button type="button" id="announceClose" aria-label="Tutup pengumuman">×</button>
+  <button type="button" id="announceClose" aria-label={T("Tutup pengumuman")}>×</button>
 </div>
 
 <style is:global>
