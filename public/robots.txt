@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://earlybeauty.pages.dev/sitemap.xml
