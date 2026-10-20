@@ -76,6 +76,9 @@ const TEMPLATES = [
 
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
   const iso = (t: number) => new Date(t).toISOString().slice(0, 10);
+  // the usual case is "from today until tomorrow"; dates are Bali dates
+  const setDates = (from: string, to: string) => { $<HTMLInputElement>("from").value = from; $<HTMLInputElement>("to").value = to; };
+  const todayTomorrow = () => { const t = baliToday(); setDates(t, iso(Date.parse(t + "T00:00:00Z") + DAY)); };
   let password = "";
   try { password = sessionStorage.getItem("admin-pw") ?? ""; } catch {}
 
@@ -124,7 +127,9 @@ const TEMPLATES = [
     $("login").hidden = true;
     $("editor").hidden = false;
     const a = await fetch("/api/announcement", { cache: "no-store" }).then(r => r.json()).catch(() => null);
-    if (a) { $<HTMLInputElement>("on").checked = a.on; $<HTMLTextAreaElement>("text").value = a.text; $<HTMLInputElement>("from").value = a.from; $<HTMLInputElement>("to").value = a.to; }
+    if (a) { $<HTMLInputElement>("on").checked = a.on; $<HTMLTextAreaElement>("text").value = a.text; }
+    // keep the saved dates only while that announcement is on the site; otherwise start from today until tomorrow
+    if (a && showNow(a, baliToday())) setDates(a.from, a.to); else todayTomorrow();
     render();
   }
 
@@ -143,9 +148,8 @@ const TEMPLATES = [
     const day = auto === "gal" ? gal : auto === "kun" ? kun : 0;
     $<HTMLTextAreaElement>("text").value = TEXT[name](day ? longDate(day) : undefined);
     // a holiday reminder shows from a week before until the day itself
-    // a holiday shows from a week before; other templates start today with no end date
-    $<HTMLInputElement>("from").value = day ? iso(day - 7 * DAY) : "";
-    $<HTMLInputElement>("to").value = day ? iso(day) : "";
+    // a holiday shows from a week before until the day itself; other templates run from today until tomorrow
+    if (day) setDates(iso(day - 7 * DAY), iso(day)); else todayTomorrow();
     $<HTMLInputElement>("on").checked = true;
     render();
     $("text").focus();
